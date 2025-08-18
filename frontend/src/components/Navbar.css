@@ -1,0 +1,67 @@
+Navbar background + shadow
+.navbar {
+  background: #212529 !important; /* dark theme */
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.4);
+  padding: 0.7rem 1rem;
+}
+
+/* Brand styling */
+.navbar-brand {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #ffc107 !important; /* gold */
+  letter-spacing: 1px;
+}
+
+/* Nav links */
+.navbar .nav-link {
+  color: #f1f1f1 !important;
+  font-weight: 500;
+  transition: all 0.3s ease-in-out;
+}
+
+.navbar .nav-link:hover,
+.navbar .nav-link.active {
+  color: #ffc107 !important; /* highlight gold */
+  text-shadow: 0px 0px 6px rgba(255, 193, 7, 0.7);
+  transform: translateY(-1px);
+}
+
+/* Wishlist heart badge */
+.badge {
+  font-size: 0.7rem;
+  padding: 4px 6px;
+  border-radius: 50%;
+}
+
+/* Dropdown styling */
+.dropdown-menu {
+  border-radius: 0.5rem;
+  padding: 0.5rem 0;
+  border: none;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.dropdown-item {
+  font-weight: 500;
+  padding: 0.6rem 1.2rem;
+  transition: 0.2s;
+}
+
+.dropdown-item:hover {
+  background-color: #ffc107;
+  color: #000 !important;
+}
+
+/* Logout button inside dropdown */
+.dropdown-item.text-danger {
+  font-weight: bold;
+}
+
+/* Mobile nav adjustments */
+@media (max-width: 768px) {
+  .navbar .nav-link {
+    padding-left: 0 !important;
+    margin-bottom: 0.5rem;
+  }
+}

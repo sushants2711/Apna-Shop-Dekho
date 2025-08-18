@@ -1,0 +1,66 @@
+/* General */
+.vh-50 {
+  height: 50vh;
+}
+
+.section-title {
+  color: #222;
+  letter-spacing: 1px;
+}
+
+/* Loader */
+.loader-size {
+  width: 3rem;
+  height: 3rem;
+}
+
+/* Search */
+.search-box {
+  border-radius: 12px;
+  border: 2px solid #007bff;
+  padding: 0.6rem 1rem;
+  transition: 0.3s ease;
+}
+.search-box:focus {
+  border-color: #0056b3;
+  box-shadow: 0 0 5px rgba(0, 91, 187, 0.5);
+}
+
+/* Sort Dropdown */
+.sort-dropdown {
+  border-radius: 10px;
+}
+
+/* Carousel */
+.carousel-img {
+  height: 400px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+/* Product Cards */
+.product-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border-radius: 12px;
+}
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0px 8px 18px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+}
+
+.product-img {
+  height: 200px;
+  object-fit: cover;
+  border-radius: 12px 12px 0 0;
+}
+
+/* Add to Cart Button */
+.add-to-cart-btn {
+  border-radius: 10px;
+  transition: 0.3s ease;
+}
+.add-to-cart-btn:hover {
+  background-color: #28a745;
+  transform: scale(1.05);
+}

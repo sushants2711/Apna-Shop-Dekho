@@ -1,0 +1,66 @@
+import React, { useEffect, useState } from "react";
+import { allProductContext } from "../../context/ProductContext/FetchContext";
+import { useNavigate } from "react-router-dom";
+
+export const Brands = () => {
+
+  const { brand, brandError, fetchBrand } = allProductContext();
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    document.title = "Brand-Page"
+  }, [])
+
+  useEffect(() => {
+    fetchBrand();
+  }, [])
+  // Some pleasant card background colors
+  const colors = [
+    "#fef9c3", // soft yellow
+    "#d1fae5", // mint green
+    "#e0f2fe", // light blue
+    "#fce7f3", // light pink
+    "#ede9fe", // lavender
+    "#fcd34d", // gold
+  ];
+
+  const handleNavigate = (brand) => {
+    const encoded = btoa(brand);
+    navigate(`/brands/${encoded}`)
+  }
+
+  return (
+    <>
+      <main className="container my-5 py-4">
+        <section className="py-4 text-center">
+
+          {!brandError && <h2 className="p-2" style={{ color: "teal" }}>
+            All Brands that are currently available in Our WareHouse...
+          </h2>}
+
+          <hr className="border border-1 border-dark" />
+
+          <div className="row my-5">
+            { brand.length > 0 && brand.map((curr, index) => (
+              <div className="col-12 col-md-6 col-lg-3" key={index} onClick={() => handleNavigate(curr)}>
+              <div
+                className="card shadow-sm border-0 rounded-3 d-flex justify-content-center align-items-center text-center p-4"
+                style={{
+                  height: "200px",
+                  backgroundColor: colors[index % colors.length],
+                  fontWeight: "bold",
+                  fontSize: "1.2rem",
+                  color: "#1b1a1dff",
+                }}
+              >
+                {curr}
+              </div>
+            </div>
+            )) }
+          </div>
+        </section>
+      </main>
+    </>
+  );
+};
