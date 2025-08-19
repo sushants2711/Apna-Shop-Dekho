@@ -1,6 +1,6 @@
 export const loginApi = async (data) => {
     try {
-        const url = "http://localhost:5500/api/user/login";
+        const url = "https://apna-shop-dekho-backend.onrender.com/api/user/login";
         const response = await fetch(url, {
             method: "POST",
             headers: {
