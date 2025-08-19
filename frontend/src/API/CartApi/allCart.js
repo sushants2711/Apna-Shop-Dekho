@@ -1,6 +1,6 @@
 export const allCart = async () => {
     try {
-        const url = "http://localhost:5500/api/cart";
+        const url = "https://apna-shop-dekho-backend.onrender.com/api/cart";
         const response = await fetch(url, {
             method: "GET",
             credentials: "include"
