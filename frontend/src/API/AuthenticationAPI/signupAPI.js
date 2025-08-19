@@ -1,6 +1,6 @@
 export const signupAPi = async (data) => {
     try {
-        const url = "http://localhost:5500/api/user/signup";
+        const url = "https://apna-shop-dekho-backend.onrender.com/api/user/signup";
         const response = await fetch(url, {
             method: "POST",
             headers: {
