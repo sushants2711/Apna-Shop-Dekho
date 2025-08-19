@@ -1,6 +1,6 @@
 export const bestSellerAPI = async () => {
     try {
-        const url = "http://localhost:5500/api/products/bestseller";
+        const url = "https://apna-shop-dekho-backend.onrender.com/api/products/bestseller";
         const response = await fetch(url, {
             method: "GET",
             credentials: "include"
