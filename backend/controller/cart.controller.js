@@ -330,6 +330,7 @@ export const cartDecreaseBy1 = async (req, res) => {
                 message: "Invalid mongoDb Logged In User Id.",
             });
         };
+        
         const productExist = await productModel.findById(id);
 
         if(!productExist) {
