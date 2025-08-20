@@ -66,8 +66,8 @@ export const LoginPage = () => {
   };
 
   return (
-    <main className="container my-5 py-5 min-vh-100">
-      <section className="row justify-content-center py-5">
+    <main className="container my-5 min-vh-100">
+      <section className="row justify-content-center">
         <div className="col-md-4 py-5">
           <form className="p-4 border rounded shadow py-5" onSubmit={handleSubmit}>
             <h2 className="mb-4 text-center">

@@ -7,6 +7,7 @@ import { deleteWishlist } from "../../API/wishlist/deleteWishlist";
 import { handleSuccess } from "../../toastMessage/successMessage";
 import { ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { addCartAPI } from "../../API/CartApi/addCart";
 
 export const AllWishlistPage = () => {
   const navigate = useNavigate();
@@ -41,8 +42,20 @@ export const AllWishlistPage = () => {
     navigate(`/product/details/${encoded}`);
   };
 
+    const handleCartItem = async (id) => {
+      const result = await addCartAPI(id);
+  
+      const { success, message, error } = result;
+  
+      if (success) {
+        handleSuccess(message);
+      } else {
+        handleError(message || error);
+      }
+    };
+
   return (
-    <main className="my-2 container py-5">
+    <main className="container">
       <section className="pt-4">
         <div className="row">
           <div className="col-md-6"></div>
@@ -70,15 +83,39 @@ export const AllWishlistPage = () => {
               onClick={() => handleDetailsPage(curr.product._id)}
             >
               <div className="row align-items-center p-4">
+                {/* Image + Buttons Section */}
                 <div className="col-md-3 text-center">
                   <img
                     src={curr.product.images[0].url}
                     alt={curr.product.name}
                     className="img-fluid rounded"
-                    style={{ maxHeight: "100px", objectFit: "cover" }}
+                    style={{ maxHeight: "150px", objectFit: "cover" }}
                   />
+
+                  {/* 👉 Buttons Side by Side */}
+                  <div className="mt-3 d-flex justify-content-center gap-2">
+                    <button
+                      className="btn btn-outline-primary btn-sm px-3"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                       handleCartItem(curr?.product._id);
+                      }}
+                    >
+                      🛒 Add
+                    </button>
+                    <button
+                      className="btn btn-primary btn-sm px-3"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigate(`/checkout/${curr.product._id}`);
+                      }}
+                    >
+                      ⚡ Buy
+                    </button>
+                  </div>
                 </div>
 
+                {/* Product Details Section */}
                 <div className="col-md-9">
                   <div className="card-body">
                     <div className="d-flex flex-column flex-md-row justify-content-md-between align-items-md-center text-center text-md-start">
@@ -105,7 +142,7 @@ export const AllWishlistPage = () => {
             </div>
           ))}
 
-        <hr className="mt-5"/>
+        <hr className="mt-5" />
 
         {wishlist?.length > 0 && (
           <div className="row my-2">

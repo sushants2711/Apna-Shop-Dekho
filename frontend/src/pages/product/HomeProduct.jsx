@@ -190,7 +190,7 @@ export const HomeProduct = () => {
   };
 
   return (
-    <main className="container my-5 pt-3">
+    <main className="container my-5">
       {/* Error message */}
       {errMessage && (
         <div className="d-flex justify-content-center align-items-center vh-50">

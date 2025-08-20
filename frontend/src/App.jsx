@@ -19,11 +19,13 @@ import { PrivateRoute } from "./routes/PrivateRoute";
 import { CartPage } from "./pages/cart/CartPage";
 import { PageNotFound } from "./pages/pageNotFound/PageNotFound";
 import { LogoutPage } from "./pages/authentication/LogoutPage";
+import { ScrollToTop } from "./routes/ScrollToTop";
 
 function App() {
   return (
     <>
       <Navbar />
+      <ScrollToTop />
       <Routes>
         {/* After login this route is not working or not visible to user*/}
         <Route

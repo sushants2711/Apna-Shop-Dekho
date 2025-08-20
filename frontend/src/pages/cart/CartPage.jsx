@@ -67,7 +67,7 @@ export const CartPage = () => {
   }, []);
 
   return (
-    <main className="container my-5" style={{ paddingTop: "60px" }}>
+    <main className="container my-5">
       <section>
         <h2 className="mb-4 text-center fw-bold">🛒 My Cart</h2>
 

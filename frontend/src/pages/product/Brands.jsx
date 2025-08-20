@@ -32,8 +32,8 @@ export const Brands = () => {
 
   return (
     <>
-      <main className="container my-5 py-4">
-        <section className="py-4 text-center">
+      <main className="container my-5">
+        <section className="text-center">
 
           {!brandError && <h2 className="p-2" style={{ color: "teal" }}>
             All Brands that are currently available in Our WareHouse...
@@ -43,7 +43,7 @@ export const Brands = () => {
 
           <div className="row my-5">
             { brand.length > 0 && brand.map((curr, index) => (
-              <div className="col-12 col-md-6 col-lg-3" key={index} onClick={() => handleNavigate(curr)}>
+              <div className="col-12 col-md-6 col-lg-3 my-3" key={index} onClick={() => handleNavigate(curr)}>
               <div
                 className="card shadow-sm border-0 rounded-3 d-flex justify-content-center align-items-center text-center p-4"
                 style={{

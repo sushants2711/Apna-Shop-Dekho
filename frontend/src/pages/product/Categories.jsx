@@ -27,7 +27,7 @@ export const Categories = () => {
 
   return (
     <>
-      <main className="container my-5 py-4">
+      <main className="container my-5">
         {categoryError && (
           <div
             className="d-flex justify-content-center align-items-center"
@@ -46,7 +46,7 @@ export const Categories = () => {
 
           <div className="row g-4 my-3">
             {category.map((curr, index) => (
-              <div className="col-12 col-md-6 col-lg-3" key={curr} onClick={() => handleNavigate(curr)}>
+              <div className="col-12 col-md-6 col-lg-3 my-3" key={curr} onClick={() => handleNavigate(curr)}>
                 <div
                   className="card shadow-sm border-0 rounded-3 d-flex justify-content-center align-items-center text-center p-4"
                   style={{
