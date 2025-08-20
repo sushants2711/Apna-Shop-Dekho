@@ -9,9 +9,7 @@ import { ToastContainer } from "react-toastify";
 import { allWishlistContext } from "../../context/WithlistContext/FetchAllWishlist";
 import { addCartAPI } from "../../API/CartApi/addCart";
 
-
 export const ProductDetailsPage = () => {
-
   const { id } = useParams();
 
   // console.log(id)
@@ -31,7 +29,7 @@ export const ProductDetailsPage = () => {
     decode = atob(id);
   }
 
-  console.log(decode)
+  // console.log(decode);
 
   const fetchTheDetails = async () => {
     try {
@@ -49,7 +47,6 @@ export const ProductDetailsPage = () => {
     }
   };
 
-
   useEffect(() => {
     if (wishlist?.some((item) => item.product._id === decode)) {
       setIsWishlisted(true);
@@ -58,9 +55,9 @@ export const ProductDetailsPage = () => {
     }
   }, [wishlist, decode]);
 
-
   useEffect(() => {
     fetchTheDetails();
+    // window.scrollTo(0, 0);
   }, []);
 
   // console.log(product);
@@ -73,15 +70,15 @@ export const ProductDetailsPage = () => {
 
       if (success) {
         handleSuccess(message);
-        fetchWishlist()
-        setIsWishlisted(!isWishlisted)
+        fetchWishlist();
+        setIsWishlisted(!isWishlisted);
       } else {
         handleError(message || error);
       }
     } catch (error) {
-      handleError(error.message)
+      handleError(error.message);
     }
-  }
+  };
 
   const handleCartItem = async (id) => {
     const result = await addCartAPI(id);
@@ -92,35 +89,56 @@ export const ProductDetailsPage = () => {
       handleSuccess(message);
     } else {
       handleError(message || error);
-    };
+    }
   };
 
   return (
     <>
       <main className="container my-5">
-        <section className="py-4 py-md-5">
-          <div className="row py-md-5">
+        <section className="">
+          <div className="row">
             <div className="col-md-6">
               {mainImage && (
                 <div
                   style={{
-                    width: "90%",
-                    height: "550px",
+                    width: "90%", // container full width
+                    height: "550px", // fixed height for main image
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
                     borderRadius: "8px",
+                    position: "relative",
+                    backgroundColor: "#f9f9f9", // optional, adds neutral bg
+                    overflow: "hidden",
                   }}
                 >
                   <img
                     src={mainImage}
                     alt="main"
                     style={{
-                      maxWidth: "100%",
-                      maxHeight: "100%",
-                      objectFit: "contain",
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover", // ✅ fits image properly
                       borderRadius: "8px",
                     }}
+                  />
+
+                  {/* Heart stays absolute */}
+                  <Heart
+                    size={35}
+                    fill={isWishlisted ? "red" : "white"}
+                    color="black"
+                    style={{
+                      position: "absolute",
+                      top: "20px",
+                      right: "20px",
+                      cursor: "pointer",
+                      backgroundColor: "rgba(255,255,255,0.8)",
+                      borderRadius: "50%",
+                      padding: "6px",
+                      boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
+                    }}
+                    onClick={() => handleToggleWishlist(product._id)}
                   />
                 </div>
               )}
@@ -132,8 +150,8 @@ export const ProductDetailsPage = () => {
                     src={curr.url}
                     alt="thumbnail"
                     className={`rounded border ${mainImage === curr.url
-                      ? "border-primary border-3"
-                      : "border-0"
+                        ? "border-primary border-3"
+                        : "border-0"
                       }`}
                     style={{
                       width: "60px",
@@ -149,9 +167,9 @@ export const ProductDetailsPage = () => {
               </div>
             </div>
             <div className="col-md-6">
-              <h2 className="mb-3 mt-5 pt-4 mt-md-0 pt-md-0 ">{product?.name}</h2>
-
-              <Heart size={40} className="mb-2" fill={isWishlisted ? "red" : "none"} onClick={() => handleToggleWishlist(product._id)} />
+              <h2 className="mb-3 mt-5 pt-4 mt-md-0 pt-md-0 ">
+                {product?.name}
+              </h2>
 
               <hr />
               <h4 className="text-primary mb-3 mt-4">
@@ -209,8 +227,15 @@ export const ProductDetailsPage = () => {
               </div>
 
               <div className="my-5 pt-3">
-                <button className="btn btn-danger me-5 px-3 border border-1 border-black p-2" onClick={() => handleCartItem(product._id)}>Add to Cart</button>
-                <button className="btn btn-primary px-4 border border-1 border-black p-2">Buy Now</button>
+                <button
+                  className="btn btn-danger me-5 px-3 border border-1 border-black p-2"
+                  onClick={() => handleCartItem(product._id)}
+                >
+                  Add to Cart
+                </button>
+                <button className="btn btn-primary px-4 border border-1 border-black p-2">
+                  Buy Now
+                </button>
               </div>
             </div>
             <ToastContainer />

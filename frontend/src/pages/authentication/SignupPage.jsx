@@ -80,7 +80,7 @@ export const SignupPage = () => {
   };
 
   return (
-    <main className="container py-5">
+    <main className="container">
       <section className="row justify-content-center py-5">
         <div className="col-md-4 py-3">
           <form className="p-4 border rounded shadow" onSubmit={handleSubmit}>
