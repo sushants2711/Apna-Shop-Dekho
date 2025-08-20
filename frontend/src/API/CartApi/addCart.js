@@ -1,6 +1,6 @@
 export const addCartAPI = async (id) => {
     try {
-        const url = `http://localhost:5500/api/cart/add/${id}`;
+        const url = `https://apna-shop-dekho-backend.onrender.com/api/cart/add/${id}`;
         const response = await fetch(url, {
             method: "POST",
             credentials: "include",

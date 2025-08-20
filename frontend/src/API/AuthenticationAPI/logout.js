@@ -1,6 +1,6 @@
 export const handleLogoutAPI = async () => {
     try {
-        const url = "http://localhost:5500/api/user/logout";
+        const url = "https://apna-shop-dekho-backend.onrender.com/api/user/logout";
         const response = await fetch(url, {
             method: "POST",
             credentials: "include"

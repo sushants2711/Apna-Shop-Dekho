@@ -1,6 +1,6 @@
 export const allBrandApi = async () => {
     try {
-        const url = "http://localhost:5500/api/products/brand";
+        const url = "https://apna-shop-dekho-backend.onrender.com/api/products/brand";
         const response = await fetch(url, {
             method: "GET",
             credentials: "include"
