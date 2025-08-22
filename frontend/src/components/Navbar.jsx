@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Heart } from "lucide-react";
-import "./Navbar.css"
+import "./Navbar.css";
 import { NavLink, Link, useNavigate } from "react-router-dom";
 import { allWishlistContext } from "../context/WithlistContext/FetchAllWishlist";
 import { AllCartContextCustomHooks } from "../context/CartContext/AllCartContext";
@@ -57,14 +57,10 @@ export const Navbar = () => {
     <header>
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm p-3">
         <div className="container-fluid container">
-          {/* Brand Logo */}
-          <NavLink
-            className="navbar-brand fw-bold fs-4 text-warning"
-            to="/"
-            onClick={handleNavLinkClick}
-          >
+          {/* Brand Logo (just text now, no link) */}
+          <span className="navbar-brand fw-bold fs-4 text-warning">
             🛍️ Apna Shop
-          </NavLink>
+          </span>
 
           {/* Mobile toggle */}
           <button
@@ -82,7 +78,18 @@ export const Navbar = () => {
           {/* Nav Items */}
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
+              {/* ✅ Products Link Added */}
               <li className="nav-item text-end">
+                <NavLink
+                  className="nav-link"
+                  to="/products"
+                  onClick={handleNavLinkClick}
+                >
+                  Products
+                </NavLink>
+              </li>
+
+              <li className="nav-item ps-4 text-end">
                 <NavLink
                   className="nav-link"
                   to="/categories"
