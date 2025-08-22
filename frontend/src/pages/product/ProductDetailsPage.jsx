@@ -176,7 +176,7 @@ export const ProductDetailsPage = () => {
               <h2 className="mb-3 mt-5 pt-4 mt-md-0 pt-md-0 ">
                 {product?.name}
               </h2>
-              <p>Rating: {"⭐".repeat(product?.rating || 0)}</p>
+              <p>Rating: {"⭐".repeat(product?.rating || 3)}</p>
 
               <hr />
               <h4 className="text-primary mb-3 mt-4">
