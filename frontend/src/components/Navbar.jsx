@@ -57,7 +57,7 @@ export const Navbar = () => {
     <header>
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm p-3">
         <div className="container-fluid container">
-          {/* Brand Logo (just text now, no link) */}
+          {/* Brand Logo */}
           <span className="navbar-brand fw-bold fs-4 text-warning">
             🛍️ Apna Shop
           </span>
@@ -77,76 +77,9 @@ export const Navbar = () => {
 
           {/* Nav Items */}
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
-              {/* ✅ Products Link Added */}
-              <li className="nav-item text-end">
-                <NavLink
-                  className="nav-link"
-                  to="/"
-                  onClick={handleNavLinkClick}
-                >
-                  Products
-                </NavLink>
-              </li>
-
-              <li className="nav-item ps-4 text-end">
-                <NavLink
-                  className="nav-link"
-                  to="/categories"
-                  onClick={handleNavLinkClick}
-                >
-                  Categories
-                </NavLink>
-              </li>
-              <li className="nav-item ps-4 text-end">
-                <NavLink
-                  className="nav-link"
-                  to="/brands"
-                  onClick={handleNavLinkClick}
-                >
-                  Brands
-                </NavLink>
-              </li>
-
-              {/* Wishlist */}
-              <li className="nav-item ps-4 text-end">
-                <NavLink
-                  className="nav-link position-relative d-flex align-items-center justify-content-end"
-                  to="/wishlist"
-                  onClick={handleNavLinkClick}
-                >
-                  <Heart
-                    color="#ff4757"
-                    strokeWidth={2.5}
-                    className="me-1 text-end"
-                  />
-                  Wishlist
-                  {lengthWishlist > 0 && (
-                    <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                      {lengthWishlist}
-                    </span>
-                  )}
-                </NavLink>
-              </li>
-
-              {/* Cart */}
-              <li className="nav-item ps-4 text-end">
-                <NavLink
-                  className="nav-link position-relative d-flex align-items-center justify-content-end"
-                  to="/cart"
-                  onClick={handleNavLinkClick}
-                >
-                  🛒 Cart
-                  {totalcartItems > 0 && (
-                    <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                      {totalcartItems}
-                    </span>
-                  )}
-                </NavLink>
-              </li>
-
-              {/* Account */}
-              <li className="nav-item ps-4 text-end">
+            <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+              {/* ✅ Account Button on LEFT */}
+              <li className="nav-item">
                 <button
                   className="btn btn-warning fw-semibold"
                   onClick={() => setShowAccountMenu(!showAccountMenu)}
@@ -160,28 +93,20 @@ export const Navbar = () => {
                 <>
                   {!name && (
                     <>
-                      <li className="nav-item ps-3 text-end">
-                        <Link
-                          className="nav-link"
-                          to="/login"
-                          onClick={handleNavLinkClick}
-                        >
+                      <li className="nav-item ps-3">
+                        <Link className="nav-link" to="/login" onClick={handleNavLinkClick}>
                           Login
                         </Link>
                       </li>
-                      <li className="nav-item ps-3 text-end">
-                        <Link
-                          className="nav-link"
-                          to="/signup"
-                          onClick={handleNavLinkClick}
-                        >
+                      <li className="nav-item ps-3">
+                        <Link className="nav-link" to="/signup" onClick={handleNavLinkClick}>
                           Signup
                         </Link>
                       </li>
                     </>
                   )}
                   {name && (
-                    <li className="nav-item ps-3 text-end">
+                    <li className="nav-item ps-3">
                       <button
                         className="nav-link text-danger btn btn-link"
                         onClick={() => {
@@ -196,9 +121,62 @@ export const Navbar = () => {
                 </>
               )}
             </ul>
+
+            {/* Other Nav Items on RIGHT */}
+            <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
+              <li className="nav-item">
+                <NavLink className="nav-link" to="/" onClick={handleNavLinkClick}>
+                  Products
+                </NavLink>
+              </li>
+              <li className="nav-item ps-4">
+                <NavLink className="nav-link" to="/categories" onClick={handleNavLinkClick}>
+                  Categories
+                </NavLink>
+              </li>
+              <li className="nav-item ps-4">
+                <NavLink className="nav-link" to="/brands" onClick={handleNavLinkClick}>
+                  Brands
+                </NavLink>
+              </li>
+
+              {/* Wishlist */}
+              <li className="nav-item ps-4 position-relative">
+                <NavLink
+                  className="nav-link d-flex align-items-center"
+                  to="/wishlist"
+                  onClick={handleNavLinkClick}
+                >
+                  <Heart color="#ff4757" strokeWidth={2.5} className="me-1" />
+                  Wishlist
+                  {lengthWishlist > 0 && (
+                    <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                      {lengthWishlist}
+                    </span>
+                  )}
+                </NavLink>
+              </li>
+
+              {/* Cart */}
+              <li className="nav-item ps-4 position-relative">
+                <NavLink
+                  className="nav-link d-flex align-items-center"
+                  to="/cart"
+                  onClick={handleNavLinkClick}
+                >
+                  🛒 Cart
+                  {totalcartItems > 0 && (
+                    <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                      {totalcartItems}
+                    </span>
+                  )}
+                </NavLink>
+              </li>
+            </ul>
           </div>
         </div>
       </nav>
+
     </header>
   );
 };
