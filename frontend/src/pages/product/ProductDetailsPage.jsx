@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { allProductDetails } from "../../API/ProductAPI/allProductDetails";
 import { Heart } from "lucide-react";
 import { toggleWishlistAPi } from "../../API/wishlist/toggleWishlist";
@@ -11,6 +11,7 @@ import { addCartAPI } from "../../API/CartApi/addCart";
 
 export const ProductDetailsPage = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
 
   // console.log(id)
 
@@ -90,6 +91,11 @@ export const ProductDetailsPage = () => {
     } else {
       handleError(message || error);
     }
+  };
+
+  const handleBuyNow = (id) => {
+    const decode = btoa(id);
+    navigate(`/all/address/${decode}`);
   };
 
   return (
@@ -176,10 +182,20 @@ export const ProductDetailsPage = () => {
                 <span className="text-dark me-2">Price: </span>₹{product?.price}
               </h4>
               <p className="">{product?.description}</p>
-              <p className="fw-semibold">{product?.category}</p>
-              <p className="fw-semibold">{product?.brandName}</p>
-              <p className="fw-semibold">Size: [{product?.size?.join(" ")}]</p>
-              <p className="fw-semibold">
+              <p className="fw-semibold">Category: {product?.category}</p>
+              <p className="fw-semibold">Brand: {product?.brandName}</p>
+              <div className="flex gap-2">
+                {product?.size?.map((size, index) => (
+                  <span
+                    key={index}
+                    className="px-3 py-1 border rounded bg-gray-100 text-gray-800 text-sm font-semibold"
+                  >
+                    {size}
+                  </span>
+                ))}
+              </div>
+
+              <p className="fw-semibold my-3">
                 {product?.bestSeller ? "BestSeller: true" : ""}
               </p>
               <p className="fw-semibold">
@@ -233,7 +249,10 @@ export const ProductDetailsPage = () => {
                 >
                   Add to Cart
                 </button>
-                <button className="btn btn-primary px-4 border border-1 border-black p-2">
+                <button className="btn btn-primary px-4 border border-1 border-black p-2" onClick={(e) => {
+                  e.stopPropagation();
+                  handleBuyNow(product._id)
+                }}>
                   Buy Now
                 </button>
               </div>
