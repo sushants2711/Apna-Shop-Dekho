@@ -82,7 +82,7 @@ export const Navbar = () => {
               <li className="nav-item text-end">
                 <NavLink
                   className="nav-link"
-                  to="/products"
+                  to="/"
                   onClick={handleNavLinkClick}
                 >
                   Products
