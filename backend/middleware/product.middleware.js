@@ -54,12 +54,13 @@ export const addProductMiddleware = async (req, res, next) => {
                 }).required()
             ),
             bestSeller: joi.boolean().optional().empty().allow(null),
-            brandName: joi.string().min(5).max(50).trim().required(),
+            brandName: joi.string().min(3).max(50).trim().required(),
             returnPolicy: joi.string().min(5).max(100).trim().required(),
             stock: joi.number().min(0).greater(0).required(),
             size: joi.array()
                 .items(joi.string().valid("S", "M", "L", "XL", "XXL", "Others"))
-                .required()
+                .required(),
+            rating: joi.number().min(0).max(5).required()
         });
 
         const { error } = schema.validate(req.body);

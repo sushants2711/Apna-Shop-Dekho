@@ -6,14 +6,14 @@ import authModel from "../models/auth.model.js";
 export const getAllProductController = async (req, res) => {
   try {
     // take a request from req.query
-    const { asc, dsc } = req.query|| "";
+    const { asc, dsc } = req.query || "";
 
     // take the query from req.query
     const query = req.query.search || "";
 
     // Build filter for search
     let filter = {};
-    
+
     if (query) {
       filter = {
         $or: [
@@ -26,7 +26,7 @@ export const getAllProductController = async (req, res) => {
 
     // Build sort option if asc or dsc is present
     let sortOption = {};
-    
+
     if (asc) {
       sortOption.price = 1;
     } else if (dsc) {
@@ -223,6 +223,7 @@ export const addProductController = async (req, res) => {
       brandName,
       returnPolicy,
       stock,
+      rating
     } = req.body;
 
     // take all the images from req.files
@@ -288,6 +289,7 @@ export const addProductController = async (req, res) => {
       brandName,
       returnPolicy,
       stock,
+      rating
     });
 
     // save the data by using mongoDb save()  method
@@ -371,6 +373,10 @@ export const getAllCategoriesProduct = async (req, res) => {
   try {
     const { category } = req.params;
 
+    const { asc, dsc } = req.query || "";
+
+    const query = req.query.search || "";
+
     if (!category) {
       return res.status(400).json({
         success: false,
@@ -378,7 +384,27 @@ export const getAllCategoriesProduct = async (req, res) => {
       });
     }
 
-    const findAllCategoryFound = await productModel.find({ category });
+    let sortOption = {};
+
+    if (asc) {
+      sortOption.price = 1;
+    } else if (dsc) {
+      sortOption.price = -1;
+    }
+
+    let filter = { category };
+
+    if (query) {
+      filter.$or = [
+        {
+          name: { $regex: query, $options: "i" },
+        },
+      ];
+    }
+
+    const findAllCategoryFound = await productModel
+      .find(filter)
+      .sort(sortOption);
 
     if (!findAllCategoryFound || findAllCategoryFound === 0) {
       return res.status(400).json({
@@ -406,6 +432,10 @@ export const getAllBrandProduct = async (req, res) => {
   try {
     const { brand } = req.params;
 
+    const { asc, dsc } = req.query || "";
+
+    const query = req.query.search || "";
+
     if (!brand) {
       return res.status(400).json({
         success: false,
@@ -413,7 +443,25 @@ export const getAllBrandProduct = async (req, res) => {
       });
     }
 
-    const findAllBrandFound = await productModel.find({ brandName: brand });
+    let sortOption = {};
+
+    if (asc) {
+      sortOption.price = 1;
+    } else if (dsc) {
+      sortOption.price = -1;
+    }
+
+    let filter = { brandName: brand };
+
+    if (query) {
+      filter.$or = [
+        {
+          name: { $regex: query, $options: "i" },
+        },
+      ];
+    }
+
+    const findAllBrandFound = await productModel.find(filter).sort(sortOption);
 
     if (!findAllBrandFound || findAllBrandFound === 0) {
       return res.status(400).json({
@@ -427,7 +475,7 @@ export const getAllBrandProduct = async (req, res) => {
       message: "Data fetch successfully",
       data: findAllBrandFound,
     });
-  } catch (error) {}
+  } catch (error) { }
 };
 
 // get all the best seller product

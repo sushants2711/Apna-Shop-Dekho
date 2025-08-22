@@ -137,6 +137,7 @@ export const FetchContextProvider = ({ children }) => {
                 brand,
                 brandError,
                 categoryDetails,
+                setCategoryDetails,
                 categoryDetailsError,
                 fetchCategoryDetails,
                 brandDetails,
@@ -144,7 +145,8 @@ export const FetchContextProvider = ({ children }) => {
                 fetchBrandDetails,
                 bestSeller,
                 bestSellerError,
-                fetchBestSeller
+                fetchBestSeller,
+                setBrandDetails
             }}
         >
             {children}

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { allProductContext } from "../../context/ProductContext/FetchContext";
 import { Heart } from "lucide-react";
@@ -8,13 +8,16 @@ import { addCartAPI } from "../../API/CartApi/addCart";
 import { handleSuccess } from "../../toastMessage/successMessage";
 import { handleError } from "../../toastMessage/errorMessage";
 import { ToastContainer } from "react-toastify";
+import { categorySortApi } from "../../API/ProductAPI/categorySortApi";
 
 export const CategoriesDetails = () => {
   const navigate = useNavigate();
   const { fetchWishlist, wishlist } = allWishlistContext();
-  const { categoryDetails, categoryDetailsError, fetchCategoryDetails } =
+  const { categoryDetails, categoryDetailsError, fetchCategoryDetails, setCategoryDetails } =
     allProductContext();
   const { category } = useParams();
+
+  const [search, setSearch] = useState("");
 
   let decode = "";
   if (category) {
@@ -64,6 +67,22 @@ export const CategoriesDetails = () => {
     navigate(`/product/details/${encode}`);
   };
 
+  const handleSort = async (e) => {
+    const value = e.target.value;
+    const result = await categorySortApi(decode, value)
+
+    const { success, message, error, data } = result;
+    if (success) {
+      setCategoryDetails(data)
+    };
+  };
+
+  const filteredProducts = categoryDetails.filter((p) => {
+    const searchLower = search.toLowerCase();
+    return p.name.toLowerCase().includes(searchLower);
+  });
+
+
   return (
     <>
       <main className="container my-5">
@@ -84,17 +103,46 @@ export const CategoriesDetails = () => {
           </h2>
           <hr className="border border-1 border-dark my-4" />
 
+          <div className="col-12 col-md-6 mx-auto my-3 p-2">
+            <input
+              type="text"
+              className="form-control search-box"
+              placeholder="🔍 Search products..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </div>
+
+          <div className="my-4 col-12 col-md-3">
+            <label htmlFor="sort" className="form-label fw-semibold fs-5">
+              Sort By Price
+            </label>
+            <select
+              id="sort"
+              className="form-control sort-dropdown"
+              onChange={handleSort}
+            >
+              <option value="" disabled selected>
+                -- Select any Value --
+              </option>
+              <option value="asc">Ascending Order</option>
+              <option value="dsc">Descending Order</option>
+            </select>
+          </div>
+
           <div className="row">
-            {categoryDetails.map((curr) => {
+            {filteredProducts.map((curr) => {
               const isWishlisted = wishlist?.some(
                 (item) => item.product._id === curr._id
               );
 
+              const handleToGetAddress = (id) => {
+                const decode = btoa(id);
+                navigate(`/all/address/${decode}`)
+              }
+
               return (
-                <div
-                  className="col-12 col-md-6 col-lg-3 mb-4"
-                  key={curr._id}
-                >
+                <div className="col-12 col-md-6 col-lg-3 mb-4" key={curr._id}>
                   <div className="card h-100 shadow-sm border-0">
                     {/* Image Box */}
                     <div
@@ -160,7 +208,7 @@ export const CategoriesDetails = () => {
                         </button>
                         <button
                           className="btn btn-primary px-3 border border-1 border-black"
-                          onClick={() => handleToNavigate(curr._id)}
+                          onClick={() => handleToGetAddress(curr._id)}
                         >
                           Buy Now
                         </button>

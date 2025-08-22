@@ -9,6 +9,7 @@ import { FetchContextProvider } from "./context/ProductContext/FetchContext.jsx"
 import { AuthContextProvider } from "./context/AuthContext/AuthContext.jsx";
 import { FetchAllWishlistProvider } from "./context/WithlistContext/FetchAllWishlist.jsx";
 import { AllCartContextProvider } from "./context/CartContext/AllCartContext.jsx";
+import { AddressContextProvider } from "./context/AddressContext/AddressContext.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -17,7 +18,9 @@ createRoot(document.getElementById("root")).render(
         <AllCartContextProvider>
           <FetchAllWishlistProvider>
             <FetchContextProvider>
-              <App />
+              <AddressContextProvider>
+                <App />
+              </AddressContextProvider>
             </FetchContextProvider>
           </FetchAllWishlistProvider>
         </AllCartContextProvider>
