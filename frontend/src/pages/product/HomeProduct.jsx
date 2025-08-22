@@ -186,8 +186,13 @@ export const HomeProduct = () => {
       }
     } catch (error) {
       handleError(error.message);
-    }
+    };
   };
+
+  const handleToBuyNow = (id) => {
+    const decode = btoa(id)
+    navigate(`/all/address/${decode}`)
+  }
 
   return (
     <main className="container my-5">
@@ -363,7 +368,12 @@ export const HomeProduct = () => {
                       >
                         🛒 Add to Cart
                       </button>
-                      <button className="btn btn-sm btn-primary flex-fill">
+                      <button className="btn btn-sm btn-primary flex-fill" 
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleToBuyNow(curr._id)
+                      }}
+                      >
                         ⚡ Buy Now
                       </button>
                     </div>

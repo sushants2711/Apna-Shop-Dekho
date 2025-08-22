@@ -20,6 +20,9 @@ import { CartPage } from "./pages/cart/CartPage";
 import { PageNotFound } from "./pages/pageNotFound/PageNotFound";
 import { LogoutPage } from "./pages/authentication/LogoutPage";
 import { ScrollToTop } from "./routes/ScrollToTop";
+import { CreateAddress } from "./pages/address/CreateAddress";
+import { GetAllAddress } from "./pages/address/GetAllAddress";
+import { PaymentPage } from "./pages/payment/PaymentPage";
 
 function App() {
   return (
@@ -75,6 +78,12 @@ function App() {
         <Route path="*" element={<PageNotFound />} />
 
         <Route path="/logout" element={<LogoutPage />} />
+
+        <Route path="/address" element={<CreateAddress />} />
+
+        <Route path="/all/address/:id" element={<GetAllAddress />} />
+
+        <Route path="/payment/:id/:addId" element={<PaymentPage />} />
         
       </Routes>
       <Footer />

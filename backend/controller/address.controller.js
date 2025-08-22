@@ -198,7 +198,6 @@ export const deleteAddressController = async (req, res) => {
     };
 };
 
-
 export const updateAddressController = async (req, res) => {
     try {
         const { name, email, phoneNumber, fullAddress, landmark, pinCode, city, state } = req.body;
@@ -296,4 +295,4 @@ export const updateAddressController = async (req, res) => {
                 error: error.message
             });
     }
-}
+};

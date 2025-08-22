@@ -9,6 +9,7 @@ import productRouter from "./router/product.route.js";
 import wishlistRouter from "./router/wishlist.route.js";
 import cartRouter from "./router/cart.route.js";
 import addressRouter from "./router/address.route.js";
+import paymentRouter from "./router/payment.route.js";
 
 // dotenv config
 dotenv.config();
@@ -36,7 +37,7 @@ app.use(cors({
     credentials: true,
     methods: "GET,POST,PUT,DELETE",
     allowedHeaders: ["Content-Type", "Authorization"]
-}))
+}));
 
 // api end points
 app.use("/api/user", authRouter);
@@ -44,6 +45,7 @@ app.use("/api/products", productRouter);
 app.use("/api/wishlist", wishlistRouter);
 app.use("/api/cart", cartRouter);
 app.use("/api/address", addressRouter);
+app.use("/api/payment", paymentRouter);
 
 // server is started here
 app.listen(PORT, () => {

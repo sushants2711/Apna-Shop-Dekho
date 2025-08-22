@@ -42,6 +42,11 @@ export const AllWishlistPage = () => {
     navigate(`/product/details/${encoded}`);
   };
 
+  const handleBuyNow = (id) => {
+    const decode = btoa(id);
+    navigate(`/all/address/${decode}`);
+  }
+
     const handleCartItem = async (id) => {
       const result = await addCartAPI(id);
   
@@ -107,7 +112,7 @@ export const AllWishlistPage = () => {
                       className="btn btn-primary btn-sm px-3"
                       onClick={(e) => {
                         e.stopPropagation();
-                        navigate(`/checkout/${curr.product._id}`);
+                        handleBuyNow(curr?.product._id);
                       }}
                     >
                       ⚡ Buy
