@@ -78,7 +78,7 @@ export const Navbar = () => {
           {/* Nav Items */}
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
-              {/* ✅ Products Link Added */}
+             
               <li className="nav-item text-end">
                 <NavLink
                   className="nav-link"
