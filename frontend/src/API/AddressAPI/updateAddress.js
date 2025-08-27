@@ -1,11 +1,11 @@
-export const loginApi = async (data) => {
+export const updateAddressApi = async (id, data) => {
     try {
-        const url = "https://apna-shop-dekho-backend.onrender.com/api/user/login";
-        // const url = "http://localhost:5500/api/user/login";
+        const url = `https://apna-shop-dekho-backend.onrender.com/api/address/update/${id}`;
+        // const url = `http://localhost:5500/api/address/update/${id}`;
         const response = await fetch(url, {
-            method: "POST",
+            method: "PUT",
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
             body: JSON.stringify(data),
             credentials: "include"

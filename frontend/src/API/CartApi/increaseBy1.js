@@ -1,6 +1,7 @@
 export const cartIncreaseBy1 = async (id) => {
     try {
         const url = `https://apna-shop-dekho-backend.onrender.com/api/cart/update/increase/${id}`;
+        // const url = `http://localhost:5500/api/cart/update/increase/${id}`;
         const response = await fetch(url, {
             method: "PUT",
             credentials: "include",

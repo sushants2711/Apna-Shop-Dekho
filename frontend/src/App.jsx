@@ -23,14 +23,20 @@ import { ScrollToTop } from "./routes/ScrollToTop";
 import { CreateAddress } from "./pages/address/CreateAddress";
 import { GetAllAddress } from "./pages/address/GetAllAddress";
 import { PaymentPage } from "./pages/payment/PaymentPage";
+import { UpdateAddress } from "./pages/address/UpdateAddress";
+import { PaymentSucess } from "./pages/payment/PaymentSucess";
+import { OrderPage } from "./pages/order/OrderPage";
+import { AllAddressPage } from "./pages/address/AllAddressPage";
+import { PaymentCartPage } from "./pages/payment/PaymentCartPage";
 
 function App() {
   return (
     <>
       <Navbar />
       <ScrollToTop />
+
       <Routes>
-        {/* After login this route is not working or not visible to user*/}
+        {/* Public Routes */}
         <Route
           path="/login"
           element={
@@ -39,7 +45,6 @@ function App() {
             </PublicRoute>
           }
         />
-
         <Route
           path="/signup"
           element={
@@ -49,6 +54,7 @@ function App() {
           }
         />
 
+        {/* Open Routes */}
         <Route path="/" element={<HomeProduct />} />
         <Route path="/categories" element={<Categories />} />
         <Route path="/brands" element={<Brands />} />
@@ -56,7 +62,7 @@ function App() {
         <Route path="/brands/:brand" element={<BrandDetails />} />
         <Route path="/product/details/:id" element={<ProductDetailsPage />} />
 
-        {/* Without login user can't access this route */}
+        {/* Protected Routes */}
         <Route
           path="/wishlist"
           element={
@@ -65,7 +71,6 @@ function App() {
             </PrivateRoute>
           }
         />
-
         <Route
           path="/cart"
           element={
@@ -75,17 +80,89 @@ function App() {
           }
         />
 
-        <Route path="*" element={<PageNotFound />} />
+        {/* Address Routes */}
+        <Route
+          path="/address"
+          element={
+            <PrivateRoute>
+              <CreateAddress />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/all/address/:id/"
+          element={
+            <PrivateRoute>
+              <GetAllAddress />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/address/update/:id"
+          element={
+            <PrivateRoute>
+              <UpdateAddress />
+            </PrivateRoute>
+          }
+        />
 
+        {/* Payment Routes */}
+        <Route
+          path="/payment/:id/:addId"
+          element={
+            <PrivateRoute>
+              <PaymentPage />
+            </PrivateRoute>
+          }
+        />
+
+        {/* Address Routes */}
+        <Route
+          path="/all/address/:id/:amount/:size"
+          element={
+            <PrivateRoute>
+              <GetAllAddress />
+            </PrivateRoute>
+          }
+        />
+
+        {/* Payment Routes */}
+        <Route
+          path="/payment/:id/:amount/:size/:addId"
+          element={
+            <PrivateRoute>
+              <PaymentPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/payment/success"
+          element={
+            <PrivateRoute>
+              <PaymentSucess />
+            </PrivateRoute>
+          }
+        />
+
+        {/* Auth Routes */}
         <Route path="/logout" element={<LogoutPage />} />
 
-        <Route path="/address" element={<CreateAddress />} />
+        {/* 404 Fallback */}
+        <Route path="*" element={<PageNotFound />} />
 
-        <Route path="/all/address/:id" element={<GetAllAddress />} />
+        <Route path="/order-history" element={
+          <PrivateRoute>
+            <OrderPage />
+          </PrivateRoute>
+        } />
 
-        <Route path="/payment/:id/:addId" element={<PaymentPage />} />
-        
+
+        <Route path="/all/address/data" element={<AllAddressPage />} />
+
+        <Route path="/payment-page/:id" element={<PaymentCartPage />} />
+
       </Routes>
+
       <Footer />
     </>
   );

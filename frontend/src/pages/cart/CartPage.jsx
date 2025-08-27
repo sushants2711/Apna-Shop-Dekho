@@ -6,8 +6,11 @@ import { handleError } from "../../toastMessage/errorMessage";
 import { cartDecreaseBy1 } from "../../API/CartApi/decreaseBy1";
 import { ToastContainer } from "react-toastify";
 import { handleDeleteAPI } from "../../API/CartApi/deleteCartApi";
+import { useNavigate } from "react-router-dom";
 
 export const CartPage = () => {
+
+  const navigate = useNavigate();
 
   const { cartItem, setCartItem, fetchAllCart, amount, totalcartItems } =
     AllCartContextCustomHooks();
@@ -62,6 +65,10 @@ export const CartPage = () => {
     }
   };
 
+  const handleClick = () => {
+    navigate("/all/address/data");
+  }
+
   useEffect(() => {
     fetchAllCart();
   }, []);
@@ -106,6 +113,7 @@ export const CartPage = () => {
 
                     <div className="ms-3 flex-grow-1">
                       <h5 className="fw-semibold">{item.product?.name}</h5>
+                      <p className="text-muted mb-1">size: {item?.size}</p>
                       <p className="text-muted mb-1">Price: ₹{item.price}</p>
 
 
@@ -146,14 +154,16 @@ export const CartPage = () => {
                   <strong>Total Amount: &nbsp; &nbsp;</strong>
                   <span className="text-success fw-bold">₹{amount}</span>
                 </h5>
-                <button className="btn btn-success btn-lg px-4">
+                <button className="btn btn-success btn-lg px-4" onClick={handleClick}>
                   ✅ Proceed to Checkout
                 </button>
               </div>
             </div>
           </>
         ) : (
-          <h5 className="text-center text-muted my-5">Your cart is empty.</h5>
+          <h5 className="d-flex justify-content-center align-items-center" style={{ height: "90vh" }}>
+            <p className="btn btn-danger p-2">Your cart is empty</p>
+          </h5>
         )}
       </section>
     </main>

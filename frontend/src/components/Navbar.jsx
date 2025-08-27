@@ -121,11 +121,13 @@ export const Navbar = () => {
                     className="me-1 text-end"
                   />
                   Wishlist
-                  {lengthWishlist > 0 && (
+                  {lengthWishlist > 0 ? (
                     <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                       {lengthWishlist}
                     </span>
-                  )}
+                  ):  <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                    
+                  </span> }
                 </NavLink>
               </li>
 
@@ -137,11 +139,23 @@ export const Navbar = () => {
                   onClick={handleNavLinkClick}
                 >
                   🛒 Cart
-                  {totalcartItems > 0 && (
+                  {totalcartItems > 0 ? (
                     <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                       {totalcartItems}
                     </span>
-                  )}
+                  ): <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                    
+                    </span>}
+                </NavLink>
+              </li>
+
+                <li className="nav-item text-end ps-4">
+                <NavLink
+                  className="nav-link"
+                  to="/order-history"
+                  onClick={handleNavLinkClick}
+                >
+                  Orders
                 </NavLink>
               </li>
 
@@ -182,15 +196,16 @@ export const Navbar = () => {
                   )}
                   {name && (
                     <li className="nav-item ps-3 text-end">
-                      <button
-                        className="nav-link text-danger btn btn-link"
+                      <a
+                        className="nav-link"
                         onClick={() => {
                           handleLogout();
+                          handleNavLinkClick();
                           handleNavLinkClick();
                         }}
                       >
                         Logout
-                      </button>
+                      </a>
                     </li>
                   )}
                 </>

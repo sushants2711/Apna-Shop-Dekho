@@ -18,6 +18,7 @@ export const CategoriesDetails = () => {
   const { category } = useParams();
 
   const [search, setSearch] = useState("");
+  const [selectedSizes, setSelectedSizes] = useState({});  // ✅ to track size per product
 
   let decode = "";
   if (category) {
@@ -45,14 +46,21 @@ export const CategoriesDetails = () => {
     }
   };
 
-  // Cart handler
+  // Cart handler (with size check)
   const handleCartItem = async (id) => {
+    const size = selectedSizes[id];
+    if (!size) {
+      handleError("⚠ Please select a size before adding to cart!");
+      return;
+    }
+
     try {
-      const result = await addCartAPI(id);
+      const result = await addCartAPI(id, { size });
       const { success, message, error } = result;
 
       if (success) {
-        handleSuccess(message);
+        handleSuccess(`${message} (Size: ${size})`);
+        navigate("/cart");
       } else {
         handleError(message || error);
       }
@@ -71,7 +79,7 @@ export const CategoriesDetails = () => {
     const value = e.target.value;
     const result = await categorySortApi(decode, value)
 
-    const { success, message, error, data } = result;
+    const { success, data } = result;
     if (success) {
       setCategoryDetails(data)
     };
@@ -82,6 +90,15 @@ export const CategoriesDetails = () => {
     return p.name.toLowerCase().includes(searchLower);
   });
 
+  const handleToGetAddress = (id, amount) => {
+    
+    const size = selectedSizes[id];
+
+    if(!size) {
+      return handleError("Please select a size before proceeding to Buy Now!");
+    }
+    navigate(`/all/address/${id}/${amount}/${size}`)
+  }
 
   return (
     <>
@@ -135,11 +152,6 @@ export const CategoriesDetails = () => {
               const isWishlisted = wishlist?.some(
                 (item) => item.product._id === curr._id
               );
-
-              const handleToGetAddress = (id) => {
-                const decode = btoa(id);
-                navigate(`/all/address/${decode}`)
-              }
 
               return (
                 <div className="col-12 col-md-6 col-lg-3 mb-4" key={curr._id}>
@@ -195,7 +207,31 @@ export const CategoriesDetails = () => {
                     {/* Card Body */}
                     <div className="card-body text-center">
                       <p className="fw-bold fs-6">{curr.name}</p>
-                      <p className="mb-1">Brand: {curr.brandName}</p>
+                      <p className="mb-2">Brand: {curr.brandName}</p>
+
+                      {/* ✅ Size options */}
+                      <p>
+                        {curr?.size?.map((size, index) => (
+                          <span
+                            key={index}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setSelectedSizes((prev) => ({
+                                ...prev,
+                               [curr._id]: prev[curr._id] === size ? null : size, 
+                              }));
+                            }}
+                            className={`px-2 py-1 border rounded mx-1 cursor-pointer ${
+                              selectedSizes[curr._id] === size
+                                ? "bg-dark text-white"
+                                : "bg-light text-dark"
+                            }`}
+                          >
+                            {size}
+                          </span>
+                        ))}
+                      </p>
+
                       <p className="text-primary fw-bold">₹{curr.price}</p>
 
                       {/* Buttons */}
@@ -208,7 +244,7 @@ export const CategoriesDetails = () => {
                         </button>
                         <button
                           className="btn btn-primary px-3 border border-1 border-black"
-                          onClick={() => handleToGetAddress(curr._id)}
+                          onClick={() => handleToGetAddress(curr._id, curr.price)}
                         >
                           Buy Now
                         </button>

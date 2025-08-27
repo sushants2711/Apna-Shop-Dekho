@@ -4,8 +4,10 @@ export const categorySortApi = async (decode, value) => {
 
         if (value === "asc") {
             newUrl = `https://apna-shop-dekho-backend.onrender.com/api/products/category/${decode}?asc=${value}`;
+            // newUrl = `http://localhost:5500/api/products/category/${decode}?asc=${value}`;
         } else if (value === "dsc") {
             newUrl = `https://apna-shop-dekho-backend.onrender.com/api/products/category/${decode}?dsc=${value}`;
+            // newUrl = `http://localhost:5500/api/products/category/${decode}?dsc=${value}`;
         };
 
         console.log(newUrl)

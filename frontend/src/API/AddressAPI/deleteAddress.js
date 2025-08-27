@@ -1,7 +1,7 @@
-export const handleDeleteAPI = async (id) => {
+export const deleteAddressApi = async (id) => {
     try {
-        const url = `https://apna-shop-dekho-backend.onrender.com/api/cart/delete/${id}`;
-        // const url = `http://localhost:5500/api/cart/delete/${id}`;
+        const url = `https://apna-shop-dekho-backend.onrender.com/api/address/delete/${id}`;
+        // const url = `http://localhost:5500/api/address/delete/${id}`;
         const response = await fetch(url, {
             method: "DELETE",
             credentials: "include"

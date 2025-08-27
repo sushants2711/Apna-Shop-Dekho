@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { allAuthContext } from "../../context/AuthContext/AuthContext";
 import { Delete } from "lucide-react";
 import { allWishlistContext } from "../../context/WithlistContext/FetchAllWishlist";
@@ -15,6 +15,9 @@ export const AllWishlistPage = () => {
 
   const { wishlist, wishlistError, lengthWishlist, amount, fetchWishlist } =
     allWishlistContext();
+
+  // ✅ Track selected size for each product
+  const [selectedSizes, setSelectedSizes] = useState({});
 
   useEffect(() => {
     fetchDetailsFromLocalStorage();
@@ -42,22 +45,38 @@ export const AllWishlistPage = () => {
     navigate(`/product/details/${encoded}`);
   };
 
-  const handleBuyNow = (id) => {
-    const decode = btoa(id);
-    navigate(`/all/address/${decode}`);
-  }
+  const handleBuyNow = (id, amount) => {
+    // const decode = btoa(id);
+    const size = selectedSizes[id];
+    if (!size) {
+      handleError("⚠ Please select a size before adding to cart!");
+      return;
+    }
 
-    const handleCartItem = async (id) => {
-      const result = await addCartAPI(id);
-  
+    navigate(`/all/address/${id}/${amount}/${size}`);
+  };
+
+  const handleCartItem = async (id) => {
+    const size = selectedSizes[id];
+    if (!size) {
+      handleError("⚠ Please select a size before adding to cart!");
+      return;
+    }
+
+    try {
+      const result = await addCartAPI(id, { size });
       const { success, message, error } = result;
-  
+
       if (success) {
         handleSuccess(message);
+        navigate("/cart");
       } else {
         handleError(message || error);
       }
-    };
+    } catch (error) {
+      handleError(error.message);
+    }
+  };
 
   return (
     <main className="container">
@@ -69,12 +88,12 @@ export const AllWishlistPage = () => {
           </div>
         </div>
 
-        {wishlistError && (
+        {wishlist?.length === 0  && (
           <div
             className="d-flex justify-content-center align-items-center"
             style={{ height: "100vh" }}
           >
-            <p className="fw-semibold text-center">{wishlistError}</p>
+            <p className="fw-semibold text-center btn btn-danger py-2">No Wishlist Product Available</p>
           </div>
         )}
       </section>
@@ -97,13 +116,38 @@ export const AllWishlistPage = () => {
                     style={{ maxHeight: "150px", objectFit: "cover" }}
                   />
 
-                  {/* 👉 Buttons Side by Side */}
+                  {/* 👉 Size Selection Pills */}
+                  <div className="mt-2">
+                    {curr?.product?.size?.map((size, index) => (
+                      <span
+                        key={index}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedSizes((prev) => ({
+                            ...prev,
+                            [curr.product._id]:
+                              prev[curr.product._id] === size ? null : size,
+                          }));
+                        }}
+                        className={`badge rounded-pill mx-1 px-3 py-2 ${selectedSizes[curr.product._id] === size
+                            ? "bg-dark text-white"
+                            : "bg-light text-dark border"
+                          }`}
+                        style={{ cursor: "pointer" }}
+                      >
+                        {size}
+                      </span>
+                    ))}
+                  </div>
+
+                  {/* 👉 Buttons */}
                   <div className="mt-3 d-flex justify-content-center gap-2">
                     <button
                       className="btn btn-outline-primary btn-sm px-3"
+                      // disabled={!selectedSizes[curr.product._id]}
                       onClick={(e) => {
                         e.stopPropagation();
-                       handleCartItem(curr?.product._id);
+                        handleCartItem(curr.product._id);
                       }}
                     >
                       🛒 Add
@@ -112,7 +156,7 @@ export const AllWishlistPage = () => {
                       className="btn btn-primary btn-sm px-3"
                       onClick={(e) => {
                         e.stopPropagation();
-                        handleBuyNow(curr?.product._id);
+                        handleBuyNow(curr.product._id, curr.product.price);
                       }}
                     >
                       ⚡ Buy
@@ -150,21 +194,22 @@ export const AllWishlistPage = () => {
         <hr className="mt-5" />
 
         {wishlist?.length > 0 && (
-          <div className="row my-2">
-            <div className="col-md-4">
-              <h5>
+          <div className="row my-2 align-items-center">
+            <div className="col-6 col-md-4">
+              <h6 className="mb-0">
                 Total Product Count:{" "}
-                <span className="ms-2">{lengthWishlist}</span>
-              </h5>
+                <span className="fw-bold ms-1">{lengthWishlist}</span>
+              </h6>
             </div>
-            <div className="col-md-8 text-end">
-              <h5>
-                Total Amount: <span className="ms-2">₹{amount}</span>
-              </h5>
+            <div className="col-6 col-md-8 text-end">
+              <h6 className="mb-0">
+                Total Amount: <span className="fw-bold ms-1">₹{amount}</span>
+              </h6>
             </div>
             <ToastContainer />
           </div>
         )}
+
       </section>
     </main>
   );

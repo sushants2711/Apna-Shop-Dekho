@@ -34,6 +34,7 @@ app.use(bodyParser.json());
 // allowed the cors policy to connect the establish connection between frontend and backend
 app.use(cors({
     origin: "https://apna-shop-dekho-sushant-frontend.onrender.com",
+    // origin: "http://localhost:5173",
     credentials: true,
     methods: "GET,POST,PUT,DELETE",
     allowedHeaders: ["Content-Type", "Authorization"]

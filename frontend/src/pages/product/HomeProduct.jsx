@@ -1,121 +1,20 @@
-// import React, { useEffect } from "react";
-// import { allProductContext } from "../../context/ProductContext/FetchContext";
-// import { sortApi } from "../../API/ProductAPI/sort.home";
-// import { useNavigate } from "react-router-dom";
-
-// export const HomeProduct = () => {
-
-//   const navigate = useNavigate();
-
-//   const {
-//     productData,
-//     errMessage,
-//     fetchAlways,
-//     setProductData,
-//     setErrMessage,
-//     bestSeller,
-//     bestSellerError,
-//     fetchBestSeller
-//   } = allProductContext();
-
-//   useEffect(() => {
-//     document.title = "Home-Page";
-//   }, []);
-
-//   useEffect(() => {
-//     fetchAlways();
-//   }, []);
-
-//   const handleSort = async (e) => {
-//     const value = e.target.value;
-
-//     const result = await sortApi(value);
-
-//     const { success, message, error, data } = result;
-
-//     if (success) {
-//       setProductData(data);
-//     } else {
-//       setErrMessage(message || error);
-//     }
-//   };
-
-//   const handleToNavigate = (id) => {
-//     const decode = btoa(id)
-//     navigate(`/product/details/${decode}`);
-//   }
-
-//   return (
-//     <>
-//       <main className="container my-5 pt-3">
-//         {errMessage && (
-//           <div
-//             className="d-flex justify-content-center align-items-center"
-//             style={{ height: "100vh" }}
-//           >
-//             <div className="fw-semibold text-center fs-5">{errMessage}</div>
-//           </div>
-//         )}
-
-//         {productData.length > 0 && (
-//           <div className="my-4 col-12 col-md-3">
-//             <label htmlFor="sort" className="form-label fw-semibold fs-5">
-//               Sort By Price
-//             </label>
-//             <select id="sort" className="form-control" onChange={handleSort}>
-//               <option value="" disabled selected>
-//                 -- Select any Value --
-//               </option>
-//               <option value="asc">Ascending Order</option>
-//               <option value="dsc">Descending Order</option>
-//             </select>
-//           </div>
-//         )}
-//         <section className="py-3">
-//           <div className="row">
-//             {productData.map((curr) => (
-//               <div className="col-12 col-md-6 col-lg-3 mb-4" key={curr._id} onClick={() => handleToNavigate(curr._id)}>
-//                 <div className="card">
-//                   <img
-//                     src={curr.images[0].url}
-//                     className="card-img-top img-fluid"
-//                     alt={curr.name}
-//                   />
-
-//                   <div className="card-body">
-//                     <p className="card-text text-center">
-//                       <span className="fw-bold">{curr.name}</span>
-//                     </p>
-//                     <p className="card-text text-center">
-//                       <span className="fw-bold">Brand: {curr.brandName}</span>
-//                     </p>
-
-//                     <p className="card-text text-center">
-//                       <span className="fw-bold">Price: {curr.price}</span>
-//                     </p>
-//                   </div>
-//                 </div>
-//               </div>
-//             ))}
-//           </div>
-//         </section>
-//       </main>
-//     </>
-//   );
-// };
-
 import React, { useEffect, useState } from "react";
 import { allProductContext } from "../../context/ProductContext/FetchContext";
 import { sortApi } from "../../API/ProductAPI/sort.home";
-import { useNavigate } from "react-router-dom";
+import { data, useNavigate } from "react-router-dom";
 import "./HomeProduct.css";
 import { addCartAPI } from "../../API/CartApi/addCart";
 import { handleSuccess } from "../../toastMessage/successMessage";
 import { handleError } from "../../toastMessage/errorMessage";
 import { ToastContainer } from "react-toastify";
+import { createPayment, getPaymentKey } from "../../API/PaymentAPI/createPayment";
 
 export const HomeProduct = () => {
   const navigate = useNavigate();
+
+  const [selectedSizes, setSelectedSizes] = useState({});
+
+  // console.log(selectedSizes)
 
   const {
     productData,
@@ -174,25 +73,69 @@ export const HomeProduct = () => {
   });
 
   const handleAddItemsToCart = async (id) => {
-    try {
-      const result = await addCartAPI(id);
+    const size = selectedSizes[id]; 
 
+    if (!size) {
+      handleError("⚠ Please select a size before adding to cart!");
+      return;
+    }
+
+    try {
+      const result = await addCartAPI(id,{ size});
       const { success, message, error } = result;
 
       if (success) {
         handleSuccess(message);
+        navigate("/cart")
       } else {
         handleError(message || error);
       }
     } catch (error) {
       handleError(error.message);
-    };
+    }
   };
 
-  const handleToBuyNow = (id) => {
-    const decode = btoa(id)
-    navigate(`/all/address/${decode}`)
+  const handleToBuyNow = (id, amount) => {
+  const size = selectedSizes[id];
+
+  if (!size) {
+    return handleError("Please select a size before proceeding to Buy Now!");
   }
+
+  navigate(`/all/address/${id}/${amount}/${size}`);
+};
+
+
+  const handleBuyNow = async (amount) => {
+    const key = await getPaymentKey();
+    console.log(key);
+    const result = await createPayment({amount: amount});
+    console.log(result);
+    console.log(result.data.id)
+
+    const options = {
+      key: key.key,
+      amount: amount,
+      currency: "INR",
+      name: "Sushant Singh",
+      description: "Razorpay Integration",
+      order_id: result.data.id,
+      callback_url: '/api/payment/paymentVerification',
+      prefill: {
+        name: localStorage.getItem("name"),
+        email: localStorage.getItem("email"),
+        contact: "9090909090"
+      },
+      theme: {
+        coloe: '#F37254'
+      },
+    };
+
+    const rzp = new Razorpay(options);
+    rzp.open();
+  }
+
+
 
   return (
     <main className="container my-5">
@@ -354,6 +297,30 @@ export const HomeProduct = () => {
                   <div className="card-body text-center">
                     <p className="card-text fw-bold">{curr.name}</p>
                     <p className="card-text">Brand: {curr.brandName}</p>
+
+                    {/* ✅ Size selection per product */}
+                    <p className="card-text">
+                      {curr?.size?.map((size, index) => (
+                        <span
+                          key={index}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setSelectedSizes((prev) => ({
+                              ...prev,
+                              [curr._id]: prev[curr._id] === size ? null : size, 
+                            }));
+                          }}
+                          className={`px-2 py-1 border rounded mx-1 cursor-pointer ${
+                            selectedSizes[curr._id] === size
+                              ? "bg-dark text-white"
+                              : "bg-light text-dark"
+                          }`}
+                        >
+                          {size}
+                        </span>
+                      ))}
+                    </p>
+
                     <p className="card-text fw-bold text-success">
                       ₹{curr.price}
                     </p>
@@ -368,11 +335,13 @@ export const HomeProduct = () => {
                       >
                         🛒 Add to Cart
                       </button>
-                      <button className="btn btn-sm btn-primary flex-fill" 
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleToBuyNow(curr._id)
-                      }}
+                      <button
+                        className="btn btn-sm btn-primary flex-fill"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleToBuyNow(curr._id, curr.price);
+                          // handleBuyNow(curr.price);
+                        }}
                       >
                         ⚡ Buy Now
                       </button>

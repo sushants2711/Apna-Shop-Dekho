@@ -4,11 +4,13 @@ export const brandSortApi = async (decode, value) => {
 
         if (value === "asc") {
             newUrl = `https://apna-shop-dekho-backend.onrender.com/api/products/brand/${decode}?asc=${value}`;
+            // newUrl = `http://localhost:5500/api/products/brand/${decode}?asc=${value}`;
         } else if (value === "dsc") {
             newUrl = `https://apna-shop-dekho-backend.onrender.com/api/products/brand/${decode}?dsc=${value}`;
+            // newUrl = `http://localhost:5500/api/products/brand/${decode}?dsc=${value}`;
         };
 
-        console.log(newUrl)
+        // console.log(newUrl)
 
         const response = await fetch(newUrl, {
             method: "GET",

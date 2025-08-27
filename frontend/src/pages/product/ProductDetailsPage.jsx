@@ -13,24 +13,20 @@ export const ProductDetailsPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  // console.log(id)
-
   const { fetchWishlist, wishlist } = allWishlistContext();
 
   const [product, setProduct] = useState({});
   const [error, setError] = useState("");
-
   const [mainImage, setMainImage] = useState([]);
-
   const [isWishlisted, setIsWishlisted] = useState(false);
 
-  let decode = "";
+  // ✅ Track selected size
+  const [selectedSize, setSelectedSize] = useState("");
 
+  let decode = "";
   if (id) {
     decode = atob(id);
   }
-
-  // console.log(decode);
 
   const fetchTheDetails = async () => {
     try {
@@ -58,11 +54,7 @@ export const ProductDetailsPage = () => {
 
   useEffect(() => {
     fetchTheDetails();
-    // window.scrollTo(0, 0);
   }, []);
-
-  // console.log(product);
-  // console.log("main images", mainImage);
 
   const handleToggleWishlist = async (id) => {
     try {
@@ -81,42 +73,60 @@ export const ProductDetailsPage = () => {
     }
   };
 
+  // ✅ Add to Cart with size
   const handleCartItem = async (id) => {
-    const result = await addCartAPI(id);
+    if (!selectedSize) {
+      handleError("⚠ Please select a size before adding to cart!");
+      return;
+    }
 
-    const { success, message, error } = result;
+    try {
+      const result = await addCartAPI(id, { size: selectedSize });
+      const { success, message, error } = result;
 
-    if (success) {
-      handleSuccess(message);
-    } else {
-      handleError(message || error);
+      if (success) {
+        handleSuccess(message);
+        navigate("/cart");
+      } else {
+        handleError(message || error);
+      }
+    } catch (error) {
+      handleError(error.message);
     }
   };
 
-  const handleBuyNow = (id) => {
-    const decode = btoa(id);
-    navigate(`/all/address/${decode}`);
+  const handleBuyNow = (id, amount) => {
+    const size = selectedSize;
+
+    // console.log(size)
+    if (!size) {
+      return handleError("Please select a size before proceeding to Buy Now!");
+    }
+
+    navigate(`/all/address/${id}/${amount}/${size}`);
   };
 
   return (
     <>
       <main className="container my-5">
-        <section className="">
+        <section>
           <div className="row">
             <div className="col-md-6">
               {mainImage && (
                 <div
                   style={{
-                    width: "90%", // container full width
-                    height: "550px", // fixed height for main image
+                    width: "90%",
+                    height: "500px",
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
                     borderRadius: "8px",
                     position: "relative",
-                    backgroundColor: "#f9f9f9", // optional, adds neutral bg
+                    backgroundColor: "#f9f9f9",
                     overflow: "hidden",
+                    margin: "0 auto",
                   }}
+                  className="mb-3"
                 >
                   <img
                     src={mainImage}
@@ -124,12 +134,12 @@ export const ProductDetailsPage = () => {
                     style={{
                       width: "100%",
                       height: "100%",
-                      objectFit: "cover", // ✅ fits image properly
+                      objectFit: "cover",
                       borderRadius: "8px",
                     }}
                   />
 
-                  {/* Heart stays absolute */}
+                  {/* Heart button */}
                   <Heart
                     size={35}
                     fill={isWishlisted ? "red" : "white"}
@@ -149,51 +159,61 @@ export const ProductDetailsPage = () => {
                 </div>
               )}
 
+              {/* Thumbnail images */}
               <div className="d-flex justify-content-center gap-2 flex-wrap mt-3">
                 {product?.images?.map((curr) => (
                   <img
                     key={curr._id}
                     src={curr.url}
                     alt="thumbnail"
-                    className={`rounded border ${mainImage === curr.url
-                        ? "border-primary border-3"
-                        : "border-0"
-                      }`}
+                    className={`rounded border ${
+                      mainImage === curr.url ? "border-primary border-3" : ""
+                    }`}
                     style={{
                       width: "60px",
                       height: "60px",
                       objectFit: "cover",
                       cursor: "pointer",
-                      backgroundColor:
-                        mainImage === curr.url ? "#f0f8ff" : "transparent",
                     }}
                     onClick={() => setMainImage(curr.url)}
                   />
                 ))}
               </div>
             </div>
+
+            {/* Right side product info */}
             <div className="col-md-6">
               <h2 className="mb-3 mt-5 pt-4 mt-md-0 pt-md-0 ">
                 {product?.name}
               </h2>
               <p>Rating: {"⭐".repeat(product?.rating || 3)}</p>
-
               <hr />
+
               <h4 className="text-primary mb-3 mt-4">
                 <span className="text-dark me-2">Price: </span>₹{product?.price}
               </h4>
-              <p className="">{product?.description}</p>
+
+              <p>{product?.description}</p>
               <p className="fw-semibold">Category: {product?.category}</p>
               <p className="fw-semibold">Brand: {product?.brandName}</p>
-              <div className="flex gap-2">
-                {product?.size?.map((size, index) => (
-                  <span
-                    key={index}
-                    className="px-3 py-1 border rounded bg-gray-100 text-gray-800 text-sm font-semibold"
-                  >
-                    {size}
-                  </span>
-                ))}
+
+              {/* ✅ Size Selection with Dropdown */}
+              <div className="my-3">
+                <label className="block text-sm font-semibold mb-1">
+                  Select Size:
+                </label>
+                <select
+                  value={selectedSize}
+                  onChange={(e) => setSelectedSize(e.target.value)}
+                  className="px-2 py-2 border rounded w-48 cursor-pointer bg-white text-sm"
+                >
+                  <option value="">-- Select Size --</option>
+                  {product?.size?.map((size, index) => (
+                    <option key={index} value={size}>
+                      {size}
+                    </option>
+                  ))}
+                </select>
               </div>
 
               <p className="fw-semibold my-3">
@@ -203,9 +223,10 @@ export const ProductDetailsPage = () => {
                 {product?.stock > 0 ? "Stock: Available" : ""}
               </p>
               <hr />
+
+              {/* Highlights */}
               <div>
                 <h5>Product Highlights</h5>
-
                 {product?.highlights?.map((curr) => (
                   <details key={curr._id} className="mb-2">
                     <summary>Details</summary>
@@ -218,6 +239,7 @@ export const ProductDetailsPage = () => {
 
               <hr />
 
+              {/* Extra details */}
               <div>
                 <h5>Extra Details</h5>
                 {product?.productDetails?.map((curr) => (
@@ -243,6 +265,7 @@ export const ProductDetailsPage = () => {
                 <p>SellerName: {product.sellerName}</p>
               </div>
 
+              {/* Add to Cart + Buy Now */}
               <div className="my-5 pt-3">
                 <button
                   className="btn btn-danger me-5 px-3 border border-1 border-black p-2"
@@ -250,14 +273,18 @@ export const ProductDetailsPage = () => {
                 >
                   Add to Cart
                 </button>
-                <button className="btn btn-primary px-4 border border-1 border-black p-2" onClick={(e) => {
-                  e.stopPropagation();
-                  handleBuyNow(product._id)
-                }}>
+                <button
+                  className="btn btn-primary px-4 border border-1 border-black p-2"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleBuyNow(product._id, product.price);
+                  }}
+                >
                   Buy Now
                 </button>
               </div>
             </div>
+
             <ToastContainer />
           </div>
         </section>

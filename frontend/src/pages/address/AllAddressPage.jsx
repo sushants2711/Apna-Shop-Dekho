@@ -6,7 +6,7 @@ import { deleteAddressApi } from "../../API/AddressAPI/deleteAddress";
 import { handleSuccess } from "../../toastMessage/successMessage";
 import { ToastContainer } from "react-toastify";
 
-export const GetAllAddress = () => {
+export const AllAddressPage = () => {
   const navigate = useNavigate();
   const { allAddress, addressError, fetchAddress } = AllAddressContext();
 
@@ -14,12 +14,11 @@ export const GetAllAddress = () => {
     fetchAddress();
   }, []);
 
-  const { id, amount, size } = useParams();
 
 
   const handleNavigatePayment = (addId) => {
     // const decode = btoa(addId);
-    navigate(`/payment/${id}/${amount}/${size}/${addId}`);
+    navigate(`/payment-page/${addId}`);
   };
 
   const handleDeleteAddress = async (id) => {
@@ -132,3 +131,4 @@ export const GetAllAddress = () => {
     </main>
   );
 };
+

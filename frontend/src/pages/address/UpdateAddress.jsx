@@ -1,13 +1,13 @@
 import React from "react";
 import { handleError } from "../../toastMessage/errorMessage";
 import { useState } from "react";
-import { createAddress } from "../../API/AddressAPI/createAddress";
 import { handleSuccess } from "../../toastMessage/successMessage";
 import { ToastContainer } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { AllAddressContext } from "../../context/AddressContext/AddressContext";
+import { updateAddressApi } from "../../API/AddressAPI/updateAddress";
 
-export const CreateAddress = () => {
+export const UpdateAddress = () => {
     const navigate = useNavigate();
     const { fetchAddress } = AllAddressContext();
 
@@ -32,6 +32,14 @@ export const CreateAddress = () => {
         });
     };
 
+    const { id } = useParams();
+
+    let decode = "";
+
+    if(id) {
+        decode = btoa(id);
+    }
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -47,28 +55,28 @@ export const CreateAddress = () => {
         } = form;
 
         if (
-            !name ||
-            !email ||
-            !phoneNumber ||
-            !fullAddress ||
-            !landmark ||
-            !pinCode ||
-            !city ||
+            !name &&
+            !email &&
+            !phoneNumber &&
+            !fullAddress &&
+            !landmark &&
+            !pinCode &&
+            !city &&
             !state
         ) {
-            return handleError("All fields are required.");
+            return handleError("At least one field is required.");
         }
 
-        if (!email.includes("@")) {
+        if (email && !email.includes("@")) {
             return handleError("Not a Valid Email.");
         }
 
-        if (!phoneNumber.length === 10) {
+        if (phoneNumber && !phoneNumber.length === 10) {
             return handleError("Phone Number Should exactly 10 digits.");
         }
 
         try {
-            const result = await createAddress(form);
+            const result = await updateAddressApi(decode, form);
             const { success, message, error } = result;
 
             if (success) {
@@ -96,8 +104,8 @@ export const CreateAddress = () => {
     };
     return (
         <div className="container mt-4">
-            <h3 className="text-center mb-4">Create Address</h3>
-            <form className="row g-3" onSubmit={handleSubmit}>
+            <h3 className="text-center mb-4">Update Your Address</h3>
+            <form className="row g-3 my-5" onSubmit={handleSubmit}>
                 <div className="col-md-6">
                     <label htmlFor="name" className="form-label">
                         Name

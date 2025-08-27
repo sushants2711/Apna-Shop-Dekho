@@ -6,6 +6,8 @@ export const addCartItems = async (req, res) => {
     try {
         const { id } = req.params;
 
+        const { size } = req.body;
+
         const loggedInUser = req.user._id;
 
         if (!id) {
@@ -34,7 +36,16 @@ export const addCartItems = async (req, res) => {
                 success: false,
                 message: "Invalid mongoDb Logged In User Id.",
             });
-        }
+        };
+
+        if (!size) {
+            return res
+                .status(400)
+                .json({
+                    success: false,
+                    message: "Size is required"
+                });
+        };
 
         const productExist = await productModel.findById(id);
 
@@ -62,6 +73,7 @@ export const addCartItems = async (req, res) => {
             product: id,
             price: productExist.price,
             totalAmount: productExist.price * 1,
+            size: size
         });
 
         const savedCartData = await cartData.save();
@@ -111,14 +123,15 @@ export const getAllCartItems = async (req, res) => {
             })
             .populate("product");
 
-        if (!allCart || allCart.length === 0) {
-            return res.status(400).json({
-                success: false,
-                message: "No Items found in your cart",
-            });
-        }
+        // if (!allCart || allCart.length === 0) {
+        //     return res.status(400).json({
+        //         success: false,
+        //         message: "No Items found in your cart",
+        //     });
+        // }
 
-        const totalCartLength = allCart.length;
+        const totalCartLength = allCart.length > 0 ? allCart.length : 0;
+        // console.log(totalCartLength)
 
         const totalPriceOfCart = allCart.reduce(
             (acc, curr) => acc + curr.price * curr.quantity,
@@ -245,13 +258,13 @@ export const cartIncreaseBy1 = async (req, res) => {
 
         const productExist = await productModel.findById(id);
 
-        if(!productExist) {
+        if (!productExist) {
             return res
-            .status(400)
-            .json({
-                success: false,
-                message: "Product not exist."
-            });
+                .status(400)
+                .json({
+                    success: false,
+                    message: "Product not exist."
+                });
         };
 
         const cartItemExist = await cartModel.findOne({
@@ -330,16 +343,16 @@ export const cartDecreaseBy1 = async (req, res) => {
                 message: "Invalid mongoDb Logged In User Id.",
             });
         };
-        
+
         const productExist = await productModel.findById(id);
 
-        if(!productExist) {
+        if (!productExist) {
             return res
-            .status(400)
-            .json({
-                success: false,
-                message: "Product not exist."
-            });
+                .status(400)
+                .json({
+                    success: false,
+                    message: "Product not exist."
+                });
         };
 
         const cartItemExist = await cartModel.findOne({
@@ -357,7 +370,7 @@ export const cartDecreaseBy1 = async (req, res) => {
         const updateData = await cartModel.findByIdAndUpdate(
             cartItemExist._id,
             {
-                quantity: cartItemExist.quantity -1,
+                quantity: cartItemExist.quantity - 1,
                 price: cartItemExist.price,
                 totalAmount: cartItemExist.totalAmount - cartItemExist.price,
             },
@@ -382,5 +395,56 @@ export const cartDecreaseBy1 = async (req, res) => {
             message: "Internal Server Error",
             error: error.message,
         });
+    }
+};
+
+export const removeAllCartItems = async (req, res) => {
+    try {
+        // console.log("1");
+        const loggedInUser = req.user._id;
+        // console.log(loggedInUser)
+
+        if (!loggedInUser) {
+            return res.status(400).json({
+                success: false,
+                message: "Logged In User Id is missing.",
+            });
+        }
+
+        if (!mongoose.Types.ObjectId.isValid(loggedInUser)) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid mongoDb Logged In User Id.",
+            });
+        };
+
+        const cartItemsExist = await cartModel.deleteMany({
+            user: loggedInUser
+        });
+
+        if (!cartItemsExist) {
+            return res
+                .status(400)
+                .json({
+                    success: false,
+                    message: "Failed to delete the items in your cart."
+                });
+        };
+
+        return res
+            .status(200)
+            .json({
+                success: true,
+                message: "Item deleted successfully"
+            });
+
+    } catch (error) {
+        return res
+            .status(500)
+            .json({
+                success: false,
+                message: "Internal Server Error",
+                error: error.message
+            })
     }
 };

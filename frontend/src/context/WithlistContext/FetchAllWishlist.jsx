@@ -22,7 +22,7 @@ export const FetchAllWishlistProvider = ({ children }) => {
         if(length > 0) {
             setLengthWishlist(length);
         }else{
-            setLengthWishlist("");
+            setLengthWishlist(0);
         }
         setAmount(totalAmount);
         setWishlistError("");

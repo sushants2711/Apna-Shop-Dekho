@@ -125,16 +125,16 @@ export const allWishlistController = async (req, res) => {
             user: loggedInUser,
         }).populate("product");
 
-        if (!findAllWishlist || findAllWishlist.length === 0) {
-            return res
-                .status(400)
-                .json({
-                    success: false,
-                    message: "No like products available."
-                });
-        };
+        // if (!findAllWishlist || findAllWishlist.length === 0) {
+        //     return res
+        //         .status(400)
+        //         .json({
+        //             success: false,
+        //             message: "No like products available."
+        //         });
+        // };
 
-        const length = findAllWishlist.length > 0 ? findAllWishlist.length : "";
+        const length = findAllWishlist.length > 0 ? findAllWishlist.length : 0;
 
         const totalPrice = findAllWishlist.reduce((acc, curr) => acc + curr.product.price, 0);
 

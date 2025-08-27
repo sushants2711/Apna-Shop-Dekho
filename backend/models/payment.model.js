@@ -6,20 +6,34 @@ const paymentSchema = new mongoose.Schema({
         ref: "User",
         required: true
     },
-    productId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Product",
-        required: true
-    },
+    products: [
+        {
+            productId: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "Product",
+                required: true
+            },
+            quantity: {
+                type: Number,
+                default: 1
+            },
+            size: {
+                type: String,
+            }
+        }
+    ],
     addressId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Address",
         required: true
     },
-    status: {
+    totalAmount: {
+        type: Number,
+        required: true
+    },
+    paymentId: {
         type: String,
-        enum: ["Success", "Failed", "Pending"],
-        default: "Pending"
+        // required: true
     }
 }, { timestamps: true });
 

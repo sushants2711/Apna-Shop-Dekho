@@ -14,15 +14,16 @@ export const BrandDetails = () => {
   const { brand } = useParams();
   const navigate = useNavigate();
 
+  const [selectedSizes, setSelectedSizes] = useState({});
+
   const {
     brandDetails,
     brandDetailsError,
     fetchBrandDetails,
     setBrandDetails,
   } = allProductContext();
-  
-  const { fetchWishlist, wishlist } = allWishlistContext();
 
+  const { fetchWishlist, wishlist } = allWishlistContext();
   const [search, setSearch] = useState("");
 
   let decode = "";
@@ -51,14 +52,21 @@ export const BrandDetails = () => {
     }
   };
 
-  // Cart handler
+  // Cart handler with size
   const handleCartItem = async (id) => {
+    const size = selectedSizes[id];
+    if (!size) {
+      handleError("⚠ Please select a size before adding to cart!");
+      return;
+    }
+
     try {
-      const result = await addCartAPI(id);
+      const result = await addCartAPI(id, { size });
       const { success, message, error } = result;
 
       if (success) {
-        handleSuccess(message);
+        handleSuccess(`${message} (Size: ${size})`);
+        navigate("/cart");
       } else {
         handleError(message || error);
       }
@@ -89,10 +97,15 @@ export const BrandDetails = () => {
     return p.name.toLowerCase().includes(searchLower);
   });
 
-  const handleToGetAddress = (id) => {
-    const decode = btoa(id);
-    navigate(`/all/address/${decode}`)
-  }
+  const handleToGetAddress = (id, amount) => {
+    const size = selectedSizes[id];
+
+    if(!size) {
+      return handleError("Please select a size before proceding to buy now.")
+    }
+
+    navigate(`/all/address/${id}/${amount}/${size}`);
+  };
 
   return (
     <>
@@ -115,13 +128,13 @@ export const BrandDetails = () => {
           <hr className="border border-1 border-dark my-4" />
 
           <div className="col-12 col-md-6 mx-auto my-3 p-2">
-             <input
-                type="text"
-                className="form-control search-box"
-                placeholder="🔍 Search products..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-              />
+            <input
+              type="text"
+              className="form-control search-box"
+              placeholder="🔍 Search products..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
           </div>
 
           <div className="my-5 col-12 col-md-3">
@@ -204,6 +217,30 @@ export const BrandDetails = () => {
                     <div className="card-body text-center">
                       <p className="fw-bold fs-6">{curr.name}</p>
                       <p className="mb-1">Brand: {curr.brandName}</p>
+
+                      {/* Size selection */}
+                      <div className="mb-2 mt-2">
+                        {curr?.size?.map((size, index) => (
+                          <span
+                            key={index}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setSelectedSizes((prev) => ({
+                                ...prev,
+                               [curr._id]: prev[curr._id] === size ? null : size, 
+                              }));
+                            }}
+                            className={`px-2 py-1 border rounded mx-1 cursor-pointer ${
+                              selectedSizes[curr._id] === size
+                                ? "bg-dark text-white"
+                                : "bg-light text-dark"
+                            }`}
+                          >
+                            {size}
+                          </span>
+                        ))}
+                      </div>
+
                       <p className="text-primary fw-bold">₹{curr.price}</p>
 
                       {/* Buttons */}
@@ -216,7 +253,7 @@ export const BrandDetails = () => {
                         </button>
                         <button
                           className="btn btn-primary px-3 border border-1 border-black"
-                          onClick={() => handleToGetAddress(curr._id)}
+                          onClick={() => handleToGetAddress(curr._id, curr.price)}
                         >
                           Buy Now
                         </button>
