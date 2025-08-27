@@ -53,9 +53,9 @@ export const CartPage = () => {
       const { success, message, error } = result;
 
       if (success) {
-        fetchAllCart()
+       fetchAllCart()
         if (cartItem.length === 1) {
-          setCartItem([]);
+        setCartItem([]);
         }
       } else {
         handleError(message || error);
@@ -66,11 +66,7 @@ export const CartPage = () => {
   };
 
   const handleClick = () => {
-    if (cartItem.length > 0) {
-      navigate("/all/address/data");
-    } else {
-      navigate("/");
-    }
+    navigate("/all/address/data");
   }
 
   useEffect(() => {
@@ -94,7 +90,7 @@ export const CartPage = () => {
           </div>
         )}
 
-
+       
         {cartItem && cartItem.length > 0 ? (
           <>
             {/* Cart Items */}

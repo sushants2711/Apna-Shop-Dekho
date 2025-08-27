@@ -23,6 +23,13 @@ export const PaymentCartPage = () => {
   const [addressError, setAddressError] = useState(null);
   const [buyError, setBuyError] = useState(null);
 
+
+  useEffect(() => {
+    if (totalcartItems === 0) {
+      navigate(-1);
+    };
+  }, []);
+
   const handleIncrement = async (id) => {
     try {
       const result = await cartIncreaseBy1(id);
@@ -76,6 +83,9 @@ export const PaymentCartPage = () => {
   };
 
   const handleClickToBuy = async () => {
+    if (totalcartItems === 0) {
+      navigate(-1);
+    };
     try {
       const result = await demoAllCartPage(id);
       const { success, message, error } = result;
