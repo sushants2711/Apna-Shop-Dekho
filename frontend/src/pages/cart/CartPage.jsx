@@ -9,6 +9,7 @@ import { handleDeleteAPI } from "../../API/CartApi/deleteCartApi";
 import { useNavigate } from "react-router-dom";
 
 export const CartPage = () => {
+
   const navigate = useNavigate();
 
   const { cartItem, setCartItem, fetchAllCart, amount, totalcartItems } =
@@ -36,13 +37,13 @@ export const CartPage = () => {
       const { success, message, error } = result;
 
       if (success) {
-        fetchAllCart();
+        fetchAllCart()
         handleSuccess(message);
       } else {
-        handleError(message || error);
+        handleError(message || error)
       }
     } catch (error) {
-      handleError(error.message);
+      handleError(error.message)
     }
   };
 
@@ -52,27 +53,21 @@ export const CartPage = () => {
       const { success, message, error } = result;
 
       if (success) {
-        fetchAllCart();
+       fetchAllCart()
         if (cartItem.length === 1) {
-          setCartItem([]);
+        setCartItem([]);
         }
       } else {
         handleError(message || error);
       }
     } catch (error) {
-      handleError(error.message);
+      handleError(error.message)
     }
   };
 
-
-  // fix the error in this code
   const handleClick = () => {
-    if (cartItem.length > 0) {
-      navigate("/all/address/data");
-    } else {
-      navigate("/");
-    }
-  };
+    navigate("/all/address/data");
+  }
 
   useEffect(() => {
     fetchAllCart();
@@ -95,6 +90,7 @@ export const CartPage = () => {
           </div>
         )}
 
+       
         {cartItem && cartItem.length > 0 ? (
           <>
             {/* Cart Items */}
@@ -114,31 +110,24 @@ export const CartPage = () => {
                       }}
                     />
 
+
                     <div className="ms-3 flex-grow-1">
                       <h5 className="fw-semibold">{item.product?.name}</h5>
                       <p className="text-muted mb-1">size: {item?.size}</p>
                       <p className="text-muted mb-1">Price: ₹{item.price}</p>
 
+
                       <div className="d-flex align-items-center">
-                        {item.quantity > 1 && (
-                          <button
-                            className="btn btn-outline-dark btn-sm rounded-circle me-2"
-                            onClick={() => handleDecrement(item.product._id)}
-                          >
-                            -
-                          </button>
-                        )}
+                        {item.quantity > 1 && <button className="btn btn-outline-dark btn-sm rounded-circle me-2" onClick={() => handleDecrement(item.product._id)}>
+                          -
+                        </button>}
                         <span className="fw-bold fs-6">{item.quantity}</span>
-                        {item.quantity < 10 && (
-                          <button
-                            className="btn btn-outline-dark btn-sm rounded-circle ms-2"
-                            onClick={() => handleIncrement(item.product._id)}
-                          >
-                            +
-                          </button>
-                        )}
+                        {item.quantity < 10 && <button className="btn btn-outline-dark btn-sm rounded-circle ms-2" onClick={() => handleIncrement(item.product._id)}>
+                          +
+                        </button>}
                       </div>
                     </div>
+
 
                     <div className="text-end me-3">
                       <h6 className="text-success fw-bold">
@@ -146,16 +135,15 @@ export const CartPage = () => {
                       </h6>
                     </div>
 
-                    <button
-                      className="btn btn-outline-danger btn-sm"
-                      onClick={() => handleDelete(item.product._id)}
-                    >
+
+                    <button className="btn btn-outline-danger btn-sm" onClick={() => handleDelete(item.product._id)}>
                       🗑
                     </button>
                   </div>
                 </div>
               ))}
             </div>
+
 
             <div
               className="card shadow-lg border-0 mt-5 position-sticky bottom-0"
@@ -166,21 +154,15 @@ export const CartPage = () => {
                   <strong>Total Amount: &nbsp; &nbsp;</strong>
                   <span className="text-success fw-bold">₹{amount}</span>
                 </h5>
-                <button
-                  className="btn btn-success btn-lg px-4"
-                  onClick={handleClick}
-                >
+                <button className="btn btn-success btn-lg px-4" onClick={handleClick}>
                   ✅ Proceed to Checkout
                 </button>
               </div>
             </div>
           </>
         ) : (
-          <h5
-            className="d-flex justify-content-center align-items-center"
-            style={{ height: "90vh" }}
-          >
-            <p className="btn btn-danger p-2">Your cart is empty</p>
+          <h5 className=" d-flex justify-content-center align-items-center" style={{ height: "90vh" }}>
+            <p className="btn btn-danger p-2">Your cart is empty.</p>
           </h5>
         )}
       </section>
