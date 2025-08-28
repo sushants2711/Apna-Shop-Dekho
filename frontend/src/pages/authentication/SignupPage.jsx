@@ -72,10 +72,10 @@ export const SignupPage = () => {
           navigate("/");
         }, 2000);
       } else {
-        // handleError(message || error);
+        handleError(message || error);
       }
     } catch (error) {
-      // handleError(error.message);
+      handleError(error.message);
     }
   };
 
