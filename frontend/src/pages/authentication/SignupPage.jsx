@@ -70,9 +70,11 @@ export const SignupPage = () => {
 
         setTimeout(() => {
           navigate("/");
-        }, 2000);
+        }, 3000);
+      } else if (!success) {
+        handleError(message);
       } else {
-        handleError(message || error);
+        handleError(error)
       }
     } catch (error) {
       handleError(error.message);
