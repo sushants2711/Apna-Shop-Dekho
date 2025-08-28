@@ -9,7 +9,7 @@ export const AllAddressContext = () => useContext(AddressContext);
 
 export const AddressContextProvider = ({ children }) => {
     const [allAddress, setAllAddress] = useState([]);
-    const [addressError, setAddressError] = useState("");
+    const [addressError, setAddressError] = useState(null);
 
     const fetchAddress = async () => {
         try {
@@ -18,6 +18,7 @@ export const AddressContextProvider = ({ children }) => {
 
             if (success) {
                 setAllAddress(data);
+                setAddressError(null)
             } else {
                 setAddressError(message || error);
             };

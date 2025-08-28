@@ -86,7 +86,7 @@ export const CreateAddress = () => {
                 });
                 setTimeout(() => {
                     navigate(-1);
-                }, 2000);
+                }, 4000);
             } else {
                 handleError(message || error);
             }
