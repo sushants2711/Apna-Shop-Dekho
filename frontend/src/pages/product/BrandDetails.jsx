@@ -9,6 +9,7 @@ import { handleSuccess } from "../../toastMessage/successMessage";
 import { handleError } from "../../toastMessage/errorMessage";
 import { ToastContainer } from "react-toastify";
 import { brandSortApi } from "../../API/ProductAPI/brandSortApi";
+import { Helmet } from "react-helmet";
 
 export const BrandDetails = () => {
   const { brand } = useParams();
@@ -16,9 +17,9 @@ export const BrandDetails = () => {
 
   const [selectedSizes, setSelectedSizes] = useState({});
 
-  useEffect(() => {
-    document.title = "Brand-Details"
-  }, []);
+  // useEffect(() => {
+  //   document.title = "Brand-Details"
+  // }, []);
 
   const {
     brandDetails,
@@ -104,7 +105,7 @@ export const BrandDetails = () => {
   const handleToGetAddress = (id, amount) => {
     const size = selectedSizes[id];
 
-    if(!size) {
+    if (!size) {
       return handleError("Please select a size before proceding to buy now.")
     }
 
@@ -113,6 +114,17 @@ export const BrandDetails = () => {
 
   return (
     <>
+      <Helmet>
+        <title>{decode} | Apna Shop</title>
+        <meta
+          name="description"
+          content={`Explore the latest products from ${decode} at Apna Shop. Get the best deals and offers today!`}
+        />
+        <meta
+          name="keywords"
+          content={`${decode}, ${decode} products, Apna Shop ${decode}, ${decode} online shopping`}
+        />
+      </Helmet>
       <main className="container my-5">
         {brandDetailsError && (
           <div
@@ -231,14 +243,13 @@ export const BrandDetails = () => {
                               e.stopPropagation();
                               setSelectedSizes((prev) => ({
                                 ...prev,
-                               [curr._id]: prev[curr._id] === size ? null : size, 
+                                [curr._id]: prev[curr._id] === size ? null : size,
                               }));
                             }}
-                            className={`px-2 py-1 border rounded mx-1 cursor-pointer ${
-                              selectedSizes[curr._id] === size
+                            className={`px-2 py-1 border rounded mx-1 cursor-pointer ${selectedSizes[curr._id] === size
                                 ? "bg-dark text-white"
                                 : "bg-light text-dark"
-                            }`}
+                              }`}
                           >
                             {size}
                           </span>

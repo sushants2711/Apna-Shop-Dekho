@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { allProductContext } from "../../context/ProductContext/FetchContext";
 import { useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet";
 
 export const Brands = () => {
 
@@ -8,18 +9,14 @@ export const Brands = () => {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    document.title = "Brand-Page"
-  }, [])
+  // useEffect(() => {
+  //   document.title = "Brand-Page"
+  // }, [])
 
   useEffect(() => {
     fetchBrand();
-  }, [])
-
-  useEffect(() => {
-    document.title="Brands Page"
   }, []);
-  
+
   // Some pleasant card background colors
   const colors = [
     "#fef9c3", // soft yellow
@@ -44,6 +41,17 @@ export const Brands = () => {
 
   return (
     <>
+      <Helmet>
+        <title>Brands | Apna Shop</title>
+        <meta
+          name="description"
+          content={`Explore the latest products Brands at Apna Shop. Get the best deals and offers today!`}
+        />
+        <meta
+          name="keywords"
+          content={`Brand products, Apna Shop online shopping`}
+        />
+      </Helmet>
       <main className="container my-5">
         <section className="text-center">
 

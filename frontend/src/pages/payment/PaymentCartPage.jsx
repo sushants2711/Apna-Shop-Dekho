@@ -10,13 +10,14 @@ import { useNavigate, useParams } from "react-router-dom";
 import { addressById } from "../../API/AddressAPI/addressById";
 import { demoAllCartPage } from "../../API/PaymentAPI/demoAllCartPage";
 import { removeAllCartItems } from "../../API/CartApi/removeAllCartItems";
+import { Helmet } from "react-helmet";
 
 export const PaymentCartPage = () => {
   const { id } = useParams();
 
-  useEffect(() => {
-    document.title = "Payment-Cart-page"
-  }, []);
+  // useEffect(() => {
+  //   document.title = "Payment-Cart-page"
+  // }, []);
 
   const navigate = useNavigate();
 
@@ -138,6 +139,19 @@ export const PaymentCartPage = () => {
   // console.log(cartItem);
 
   return (
+    <>
+     <Helmet>
+        <title>Secure Payment | Apna Shop</title>
+        <meta
+          name="description"
+          content="Complete your secure payment on Apna Shop. Multiple payment options including UPI, cards, and wallets."
+        />
+        <meta
+          name="keywords"
+          content="payment, checkout, apna shop payment, secure payment, ecommerce"
+        />
+        </Helmet>
+
     <main className="container my-5">
       {addressError && (
         <div className="alert alert-danger my-3">{addressError}</div>
@@ -288,5 +302,6 @@ export const PaymentCartPage = () => {
         {/* <ToastContainer /> */}
       </section>
     </main>
+    </>
   );
 };

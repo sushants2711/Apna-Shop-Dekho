@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { allProductContext } from "../../context/ProductContext/FetchContext";
 import { useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet";
 
 export const Categories = () => {
   const { category, categoryError, fetchCategory } = allProductContext();
@@ -23,9 +24,9 @@ export const Categories = () => {
   "#fbcfe8", // rose pastel
 ];
 
-useEffect(() => {
-  document.title = "Categories-page"
-}, []);
+// useEffect(() => {
+//   document.title = "Categories-page"
+// }, []);
 
   useEffect(() => {
     fetchCategory();
@@ -38,6 +39,17 @@ useEffect(() => {
 
   return (
     <>
+    <Helmet>
+        <title>Categories | Apna Shop</title>
+        <meta
+          name="description"
+          content={`Explore the latest products Categories at Apna Shop. Get the best deals and offers today!`}
+        />
+        <meta
+          name="keywords"
+          content={`Categories products, Apna Shop online shopping`}
+        />
+      </Helmet>
       <main className="container my-5">
         {categoryError && (
           <div

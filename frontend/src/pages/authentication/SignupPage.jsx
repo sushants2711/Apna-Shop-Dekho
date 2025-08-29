@@ -6,13 +6,14 @@ import { handleSuccess } from "../../toastMessage/successMessage";
 import { handleError } from "../../toastMessage/errorMessage";
 import { allAuthContext } from "../../context/AuthContext/AuthContext";
 import { ToastContainer } from "react-toastify";
+import { Helmet } from "react-helmet";
 
 export const SignupPage = () => {
   const { setUserDetailsInLocalStorage } = allAuthContext();
 
-    useEffect(() => {
-      document.title = "Signup-Page"
-    })
+  // useEffect(() => {
+  //   document.title = "Signup-Page"
+  // })
 
   const navigate = useNavigate();
 
@@ -86,124 +87,135 @@ export const SignupPage = () => {
   };
 
   return (
-    <main className="container">
-      <section className="row justify-content-center py-5">
-        <div className="col-md-4 py-3">
-          <form className="p-4 border rounded shadow" onSubmit={handleSubmit}>
-            <h2 className="mb-4 text-center">Signup ? for Shopping</h2>
+    <>
+      <Helmet>
+        <title>Signup | Apna Shop</title>
+        <meta
+          name="description"
+          content="Create your account on Apna Shop to enjoy seamless shopping and exclusive deals."
+        />
+        <meta name="keywords" content="signup, register, apna shop, ecommerce" />
+      </Helmet>
 
-            <div className="mb-3">
-              <label htmlFor="name" className="form-label">
-                Name
-              </label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                placeholder="Enter Your Name"
-                className="form-control"
-                onChange={handleInputChange}
-                value={signup.name}
-              />
-            </div>
+      <main className="container">
+        <section className="row justify-content-center py-5">
+          <div className="col-md-4 py-3">
+            <form className="p-4 border rounded shadow" onSubmit={handleSubmit}>
+              <h2 className="mb-4 text-center">Signup ? for Shopping</h2>
 
-            <div className="mb-3">
-              <label htmlFor="email" className="form-label">
-                Email
-              </label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                placeholder="Enter Your Email"
-                className="form-control"
-                onChange={handleInputChange}
-                value={signup.email}
-              />
-            </div>
-
-            <div className="mb-3">
-              <label htmlFor="phone" className="form-label">
-                Phone Number
-              </label>
-              <input
-                type="tel"
-                id="phone"
-                name="phoneNumber"
-                placeholder="Enter Your Phone Number"
-                className="form-control"
-                onChange={handleInputChange}
-                value={signup.phoneNumber}
-              />
-            </div>
-
-            <div className="mb-3 position-relative">
-              <label htmlFor="password1" className="form-label">
-                Password
-              </label>
-              <div className="input-group">
+              <div className="mb-3">
+                <label htmlFor="name" className="form-label">
+                  Name
+                </label>
                 <input
-                  type={showPassword ? "text" : "password"}
-                  id="password1"
-                  name="password"
-                  placeholder="Enter Your Password"
+                  type="text"
+                  id="name"
+                  name="name"
+                  placeholder="Enter Your Name"
                   className="form-control"
                   onChange={handleInputChange}
-                  value={signup.password}
+                  value={signup.name}
                 />
-                <button
-                  type="button"
-                  className="btn btn-outline-secondary text-danger"
-                  onClick={() => setShowPassword(!showPassword)}
-                >
-                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                </button>
               </div>
-            </div>
 
-            <div className="mb-3 position-relative">
-              <label htmlFor="confirmPassword" className="form-label">
-                Confirm Password
-              </label>
-              <div className="input-group">
+              <div className="mb-3">
+                <label htmlFor="email" className="form-label">
+                  Email
+                </label>
                 <input
-                  type={showConfirmPassword ? "text" : "password"}
-                  id="confirmPassword"
-                  name="confirmPassword"
-                  placeholder="Enter Your Confirm Password"
+                  type="email"
+                  id="email"
+                  name="email"
+                  placeholder="Enter Your Email"
                   className="form-control"
                   onChange={handleInputChange}
-                  value={signup.confirmPassword}
+                  value={signup.email}
                 />
-                <button
-                  type="button"
-                  className="btn btn-outline-secondary text-danger"
-                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                >
-                  {showConfirmPassword ? (
-                    <EyeOff size={18} />
-                  ) : (
-                    <Eye size={18} />
-                  )}
+              </div>
+
+              <div className="mb-3">
+                <label htmlFor="phone" className="form-label">
+                  Phone Number
+                </label>
+                <input
+                  type="tel"
+                  id="phone"
+                  name="phoneNumber"
+                  placeholder="Enter Your Phone Number"
+                  className="form-control"
+                  onChange={handleInputChange}
+                  value={signup.phoneNumber}
+                />
+              </div>
+
+              <div className="mb-3 position-relative">
+                <label htmlFor="password1" className="form-label">
+                  Password
+                </label>
+                <div className="input-group">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    id="password1"
+                    name="password"
+                    placeholder="Enter Your Password"
+                    className="form-control"
+                    onChange={handleInputChange}
+                    value={signup.password}
+                  />
+                  <button
+                    type="button"
+                    className="btn btn-outline-secondary text-danger"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  </button>
+                </div>
+              </div>
+
+              <div className="mb-3 position-relative">
+                <label htmlFor="confirmPassword" className="form-label">
+                  Confirm Password
+                </label>
+                <div className="input-group">
+                  <input
+                    type={showConfirmPassword ? "text" : "password"}
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    placeholder="Enter Your Confirm Password"
+                    className="form-control"
+                    onChange={handleInputChange}
+                    value={signup.confirmPassword}
+                  />
+                  <button
+                    type="button"
+                    className="btn btn-outline-secondary text-danger"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  >
+                    {showConfirmPassword ? (
+                      <EyeOff size={18} />
+                    ) : (
+                      <Eye size={18} />
+                    )}
+                  </button>
+                </div>
+              </div>
+
+              <div className="mb-3">
+                <button type="submit" className="btn btn-primary w-100">
+                  Signup
                 </button>
               </div>
-            </div>
 
-            <div className="mb-3">
-              <button type="submit" className="btn btn-primary w-100">
-                Signup
-              </button>
-            </div>
-
-            <div className="text-center">
-              <p>
-                Already Have an Account? <Link to="/login">Login</Link>
-              </p>
-            </div>
-          </form>
-        </div>
-        <ToastContainer />
-      </section>
-    </main>
+              <div className="text-center">
+                <p>
+                  Already Have an Account? <Link to="/login">Login</Link>
+                </p>
+              </div>
+            </form>
+          </div>
+          <ToastContainer />
+        </section>
+      </main>
+    </>
   );
 };

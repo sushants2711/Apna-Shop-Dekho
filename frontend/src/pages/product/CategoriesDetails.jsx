@@ -9,6 +9,7 @@ import { handleSuccess } from "../../toastMessage/successMessage";
 import { handleError } from "../../toastMessage/errorMessage";
 import { ToastContainer } from "react-toastify";
 import { categorySortApi } from "../../API/ProductAPI/categorySortApi";
+import { Helmet } from "react-helmet";
 
 export const CategoriesDetails = () => {
   const navigate = useNavigate();
@@ -29,9 +30,9 @@ export const CategoriesDetails = () => {
     fetchCategoryDetails(decode);
   }, []);
 
-  useEffect(() => {
-    document.title = "Category-Details-Page"
-  }, []);
+  // useEffect(() => {
+  //   document.title = "Category-Details-Page"
+  // }, []);
 
   // Wishlist handler
   const handleToggleWishlist = async (id) => {
@@ -95,10 +96,10 @@ export const CategoriesDetails = () => {
   });
 
   const handleToGetAddress = (id, amount) => {
-    
+
     const size = selectedSizes[id];
 
-    if(!size) {
+    if (!size) {
       return handleError("Please select a size before proceeding to Buy Now!");
     }
     navigate(`/all/address/${id}/${amount}/${size}`)
@@ -106,6 +107,17 @@ export const CategoriesDetails = () => {
 
   return (
     <>
+      <Helmet>
+        <title>{decode} | Apna Shop</title>
+        <meta
+          name="description"
+          content={`Explore the latest products categories from ${decode} at Apna Shop. Get the best deals and offers today!`}
+        />
+        <meta
+          name="keywords"
+          content={`${decode}, ${decode} products categories, Apna Shop ${decode}, ${decode} online shopping`}
+        />
+      </Helmet>
       <main className="container my-5">
         {categoryDetailsError && (
           <div
@@ -222,14 +234,13 @@ export const CategoriesDetails = () => {
                               e.stopPropagation();
                               setSelectedSizes((prev) => ({
                                 ...prev,
-                               [curr._id]: prev[curr._id] === size ? null : size, 
+                                [curr._id]: prev[curr._id] === size ? null : size,
                               }));
                             }}
-                            className={`px-2 py-1 border rounded mx-1 cursor-pointer ${
-                              selectedSizes[curr._id] === size
+                            className={`px-2 py-1 border rounded mx-1 cursor-pointer ${selectedSizes[curr._id] === size
                                 ? "bg-dark text-white"
                                 : "bg-light text-dark"
-                            }`}
+                              }`}
                           >
                             {size}
                           </span>

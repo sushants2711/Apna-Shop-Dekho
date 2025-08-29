@@ -7,6 +7,7 @@ import { ToastContainer } from 'react-toastify';
 import { allProductDetails } from '../../API/ProductAPI/allProductDetails';
 import { addressById } from '../../API/AddressAPI/addressById';
 import { demoBuyNow } from '../../API/PaymentAPI/demoPaymentAPI';
+import { Helmet } from 'react-helmet';
 
 export const PaymentPage = () => {
 
@@ -19,9 +20,9 @@ export const PaymentPage = () => {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    document.title = "Payment-Page"
-  }, []);
+  // useEffect(() => {
+  //   document.title = "Payment-Page"
+  // }, []);
 
   const { id, amount, size, addId } = useParams();
 
@@ -86,6 +87,17 @@ export const PaymentPage = () => {
 
   return (
     <>
+      <Helmet>
+        <title>Secure Payment | Apna Shop</title>
+        <meta
+          name="description"
+          content="Complete your secure payment on Apna Shop. Multiple payment options including UPI, cards, and wallets."
+        />
+        <meta
+          name="keywords"
+          content="payment, checkout, apna shop payment, secure payment, ecommerce"
+        />
+      </Helmet>
       <main className='container my-5'>
         <h2 className="mb-4 text-center">Payment Page</h2>
 
@@ -130,7 +142,7 @@ export const PaymentPage = () => {
           </div>
         </div>
 
-      
+
         <div className="text-center">
           <button className="btn btn-success py-2 px-5" onClick={buyNow}>Buy Now</button>
         </div>

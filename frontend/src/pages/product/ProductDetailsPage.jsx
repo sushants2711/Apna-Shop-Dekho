@@ -8,6 +8,7 @@ import { handleError } from "../../toastMessage/errorMessage";
 import { ToastContainer } from "react-toastify";
 import { allWishlistContext } from "../../context/WithlistContext/FetchAllWishlist";
 import { addCartAPI } from "../../API/CartApi/addCart";
+import { Helmet } from "react-helmet";
 
 export const ProductDetailsPage = () => {
   const { id } = useParams();
@@ -15,9 +16,9 @@ export const ProductDetailsPage = () => {
 
   const { fetchWishlist, wishlist } = allWishlistContext();
 
-  useEffect(() => {
-    document.title = "Product-Details-Page"
-  }, []);
+  // useEffect(() => {
+  //   document.title = "Product-Details-Page"
+  // }, []);
 
   const [product, setProduct] = useState({});
   const [error, setError] = useState("");
@@ -112,6 +113,17 @@ export const ProductDetailsPage = () => {
 
   return (
     <>
+     <Helmet>
+        <title>Product Details Page | Apna Shop</title>
+        <meta
+          name="description"
+          content={`Explore the latest products Details at Apna Shop. Get the best deals and offers today!`}
+        />
+        <meta
+          name="keywords"
+          content={`Products Details Page, Apna Shop online shopping`}
+        />
+      </Helmet>
       <main className="container my-5">
         <section>
           <div className="row">
