@@ -124,7 +124,7 @@ export const Navbar = () => {
                 </NavLink>
               </li>
 
-              {/* Orders */}
+              {/* Account Dropdown */}
               <li className="nav-item dropdown ps-4 text-end">
                 <div className="dropdown">
                   <button
@@ -136,35 +136,57 @@ export const Navbar = () => {
                     Account
                   </button>
                   <ul className="dropdown-menu bg-dark" aria-labelledby="accountDropdown">
-
-                    <li>
-                      <Link className="dropdown-item text-light" to="/user/profile" onClick={handleNavLinkClick}>Profile</Link>
-                    </li>
-
                     {!name ? (
                       <>
                         <li>
-                          <Link className="dropdown-item text-light" to="/login" onClick={handleNavLinkClick}>
+                          <Link
+                            className="dropdown-item text-light"
+                            to="/login"
+                            onClick={handleNavLinkClick}
+                          >
                             Login
                           </Link>
                         </li>
                         <li>
-                          <Link className="dropdown-item text-light" to="/signup" onClick={handleNavLinkClick}>
+                          <Link
+                            className="dropdown-item text-light"
+                            to="/signup"
+                            onClick={handleNavLinkClick}
+                          >
                             Signup
                           </Link>
                         </li>
                       </>
                     ) : (
-                      <li>
-                        <button className="dropdown-item text-light" onClick={handleLogout}>
-                          Logout
-                        </button>
-                      </li>
+                      <>
+                        <li>
+                          <Link
+                            className="dropdown-item text-light"
+                            to="/user/profile"
+                            onClick={handleNavLinkClick}
+                          >
+                            Profile
+                          </Link>
+                        </li>
+                        <li>
+                          <Link
+                            className="dropdown-item text-light"
+                            to="/order-history"
+                            onClick={handleNavLinkClick}
+                          >
+                            Orders
+                          </Link>
+                        </li>
+                        <li>
+                          <button className="dropdown-item text-light" onClick={handleLogout}>
+                            Logout
+                          </button>
+                        </li>
+                      </>
                     )}
                   </ul>
                 </div>
               </li>
-
             </ul>
           </div>
         </div>
