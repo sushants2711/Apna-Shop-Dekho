@@ -16,6 +16,10 @@ export const HomeProduct = () => {
 
   // console.log(selectedSizes)
 
+  useEffect(() => {
+    document.title = "HomePage"
+  }, []);
+
   const {
     productData,
     errMessage,
@@ -223,7 +227,7 @@ export const HomeProduct = () => {
                 <div
                   className={`carousel-item ${index === 0 ? "active" : ""}`}
                   key={item._id}
-                  onClick={() => handleToNavigate(item._id)}
+                  onClick={() => handleToNavigate(item._id)} style={{ cursor: "pointer"}}
                 >
                   <img
                     src={item.images[0].url}

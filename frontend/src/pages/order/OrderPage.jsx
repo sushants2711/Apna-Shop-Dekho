@@ -5,6 +5,10 @@ export const OrderPage = () => {
   const [orderData, setOrderData] = useState([]);
   const [orderError, setOrderError] = useState(null);
 
+  useEffect(() => {
+    document.title = "Order-Page"
+  }, []);
+
   const fetchOrderDetails = async () => {
     try {
       const result = await orderHistory();

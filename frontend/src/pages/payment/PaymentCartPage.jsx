@@ -14,6 +14,10 @@ import { removeAllCartItems } from "../../API/CartApi/removeAllCartItems";
 export const PaymentCartPage = () => {
   const { id } = useParams();
 
+  useEffect(() => {
+    document.title = "Payment-Cart-page"
+  }, []);
+
   const navigate = useNavigate();
 
   const { cartItem, setCartItem, fetchAllCart, amount, totalcartItems, setTotalCartItems } =

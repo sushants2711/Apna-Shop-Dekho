@@ -29,6 +29,10 @@ export const CategoriesDetails = () => {
     fetchCategoryDetails(decode);
   }, []);
 
+  useEffect(() => {
+    document.title = "Category-Details-Page"
+  }, []);
+
   // Wishlist handler
   const handleToggleWishlist = async (id) => {
     try {

@@ -10,6 +10,10 @@ import { useNavigate } from "react-router-dom";
 
 export const CartPage = () => {
 
+  useEffect(() => {
+    document.title = "Cart-Page"
+  }, []);
+
   const navigate = useNavigate();
 
   const { cartItem, setCartItem, fetchAllCart, amount, totalcartItems } =

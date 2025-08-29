@@ -1,15 +1,25 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { handleError } from "../../toastMessage/errorMessage";
-import { useState } from "react";
 import { handleSuccess } from "../../toastMessage/successMessage";
 import { ToastContainer } from "react-toastify";
 import { useNavigate, useParams } from "react-router-dom";
 import { AllAddressContext } from "../../context/AddressContext/AddressContext";
 import { updateAddressApi } from "../../API/AddressAPI/updateAddress";
+import { addressById } from "../../API/AddressAPI/addressById";
 
 export const UpdateAddress = () => {
     const navigate = useNavigate();
     const { fetchAddress } = AllAddressContext();
+    const { id } = useParams();
+
+    let decode = "";
+    if (id) {
+        decode = btoa(id);
+    };
+
+      useEffect(() => {
+        document.title = "Update-Address-page"
+      }, [])
 
     const [form, setFormData] = useState({
         name: "",
@@ -25,20 +35,41 @@ export const UpdateAddress = () => {
     const handleChange = (e) => {
         const name = e.target.name;
         const value = e.target.value;
-
         setFormData({
             ...form,
             [name]: value,
         });
     };
 
-    const { id } = useParams();
+    const fetchAddressByIdData = async () => {
+        try {
+            const result = await addressById(decode);
+            const { success, message, error, data } = result;
 
-    let decode = "";
+            if (success) {
+                setFormData({
+                    name: data?.name || "",
+                    email: data?.email || "",
+                    phoneNumber: data?.phoneNumber || "",
+                    fullAddress: data?.fullAddress || "",
+                    landmark: data?.landmark || "",
+                    pinCode: data?.pinCode || "",
+                    city: data?.city || "",
+                    state: data?.state || "",
+                });
+            } else if (!success) {
+                handleError(message);
+            } else {
+                handleError(error);
+            }
+        } catch (error) {
+            handleError(error.message);
+        }
+    };
 
-    if(id) {
-        decode = btoa(id);
-    }
+    useEffect(() => {
+        fetchAddressByIdData();
+    }, [id]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -71,8 +102,8 @@ export const UpdateAddress = () => {
             return handleError("Not a Valid Email.");
         }
 
-        if (phoneNumber && !phoneNumber.length === 10) {
-            return handleError("Phone Number Should exactly 10 digits.");
+        if (phoneNumber && phoneNumber.length !== 10) {
+            return handleError("Phone Number should be exactly 10 digits.");
         }
 
         try {
@@ -82,16 +113,6 @@ export const UpdateAddress = () => {
             if (success) {
                 handleSuccess(message);
                 fetchAddress();
-                setFormData({
-                    name: "",
-                    email: "",
-                    phoneNumber: "",
-                    fullAddress: "",
-                    landmark: "",
-                    pinCode: "",
-                    city: "",
-                    state: "",
-                });
                 setTimeout(() => {
                     navigate(-1);
                 }, 2000);
@@ -102,6 +123,7 @@ export const UpdateAddress = () => {
             handleError(error.message);
         }
     };
+
     return (
         <div className="container mt-4">
             <h3 className="text-center mb-4">Update Your Address</h3>
@@ -156,7 +178,6 @@ export const UpdateAddress = () => {
                         Full Address
                     </label>
                     <textarea
-                        type="text"
                         className="form-control"
                         id="address"
                         placeholder="Enter Your Address"

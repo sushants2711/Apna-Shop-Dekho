@@ -28,6 +28,8 @@ import { PaymentSucess } from "./pages/payment/PaymentSucess";
 import { OrderPage } from "./pages/order/OrderPage";
 import { AllAddressPage } from "./pages/address/AllAddressPage";
 import { PaymentCartPage } from "./pages/payment/PaymentCartPage";
+import { UserProfile } from "./pages/userProfile/UserProfile";
+import { UpdateProfilePage } from "./pages/userProfile/UpdateProfilePage";
 
 function App() {
   return (
@@ -157,9 +159,13 @@ function App() {
         } />
 
 
-        <Route path="/all/address/data" element={<AllAddressPage />} />
+        <Route path="/all/address/data" element={<PrivateRoute><AllAddressPage /> </PrivateRoute>} />
 
-        <Route path="/payment-page/:id" element={<PaymentCartPage />} />
+        <Route path="/payment-page/:id" element={<PrivateRoute><PaymentCartPage /> </PrivateRoute>} />
+
+        <Route path="/user/profile" element={<PrivateRoute> <UserProfile /> </PrivateRoute>} />
+
+        <Route path="/user/profile-update" element={<PrivateRoute><UpdateProfilePage /> </PrivateRoute>} />
 
       </Routes>
 

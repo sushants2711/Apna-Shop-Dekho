@@ -65,3 +65,10 @@ Navbar background + shadow
     margin-bottom: 0.5rem;
   }
 }
+
+
+.dropdown-menu {
+  min-width: inherit !important; 
+  width: 100% !important;       
+  text-align: center;      
+}

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { signupAPi } from "../../API/AuthenticationAPI/signupAPI";
@@ -9,6 +9,10 @@ import { ToastContainer } from "react-toastify";
 
 export const SignupPage = () => {
   const { setUserDetailsInLocalStorage } = allAuthContext();
+
+    useEffect(() => {
+      document.title = "Signup-Page"
+    })
 
   const navigate = useNavigate();
 

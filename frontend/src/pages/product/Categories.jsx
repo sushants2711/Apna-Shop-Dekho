@@ -8,13 +8,24 @@ export const Categories = () => {
   const navigate = useNavigate();
   // Some pleasant card background colors
   const colors = [
-    "#fef9c3", // soft yellow
-    "#d1fae5", // mint green
-    "#e0f2fe", // light blue
-    "#fce7f3", // light pink
-    "#ede9fe", // lavender
-    "#fcd34d", // gold
-  ];
+  "#fef9c3", // soft yellow
+  "#d1fae5", // mint green
+  "#e0f2fe", // light blue
+  "#fce7f3", // light pink
+  "#ede9fe", // lavender
+  "#fcd34d", // gold
+  "#ffe4e6", // blush pink
+  "#ccfbf1", // aqua mint
+  "#fde68a", // warm amber
+  "#e9d5ff", // soft violet
+  "#d9f99d", // lime pastel
+  "#bae6fd", // sky pastel
+  "#fbcfe8", // rose pastel
+];
+
+useEffect(() => {
+  document.title = "Categories-page"
+}, []);
 
   useEffect(() => {
     fetchCategory();
@@ -55,6 +66,7 @@ export const Categories = () => {
                     fontWeight: "bold",
                     fontSize: "1.2rem",
                     color: "#1b1a1dff",
+                    cursor: "pointer"
                   }}
                 >
                   {curr}

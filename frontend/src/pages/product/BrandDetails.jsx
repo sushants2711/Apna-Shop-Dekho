@@ -16,6 +16,10 @@ export const BrandDetails = () => {
 
   const [selectedSizes, setSelectedSizes] = useState({});
 
+  useEffect(() => {
+    document.title = "Brand-Details"
+  }, []);
+
   const {
     brandDetails,
     brandDetailsError,

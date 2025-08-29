@@ -19,6 +19,10 @@ export const PaymentPage = () => {
 
   const navigate = useNavigate();
 
+  useEffect(() => {
+    document.title = "Payment-Page"
+  }, []);
+
   const { id, amount, size, addId } = useParams();
 
   const buyNow = async () => {
@@ -128,7 +132,7 @@ export const PaymentPage = () => {
 
       
         <div className="text-center">
-          <button className="btn btn-success btn-lg" onClick={buyNow}>Buy Now</button>
+          <button className="btn btn-success py-2 px-5" onClick={buyNow}>Buy Now</button>
         </div>
         <ToastContainer />
       </main>

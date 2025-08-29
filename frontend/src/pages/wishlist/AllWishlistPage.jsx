@@ -24,6 +24,10 @@ export const AllWishlistPage = () => {
     fetchWishlist();
   }, []);
 
+  useEffect(() => {
+    document.title = "AllWishlist Page"
+  }, []);
+
   const handleDeleteWishlist = async (id) => {
     try {
       const result = await deleteWishlist(id);
@@ -105,7 +109,7 @@ export const AllWishlistPage = () => {
               key={curr._id}
               className="card mb-3 shadow-sm"
               onClick={() => handleDetailsPage(curr.product._id)}
-            >
+           style={{cursor: "pointer"}} >
               <div className="row align-items-center p-4">
                 {/* Image + Buttons Section */}
                 <div className="col-md-3 text-center">

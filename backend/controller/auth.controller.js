@@ -37,7 +37,7 @@ export const signupController = async (req, res) => {
                 message: "Phone number is already exist in different account",
             });
         }
-        
+
         // hash number
         const salt_round = 10;
         // hash password
@@ -67,7 +67,7 @@ export const signupController = async (req, res) => {
             role: newUser.role,
         });
 
-        
+
     } catch (error) {
         return res.status(500).json({
             success: false,
@@ -245,3 +245,166 @@ export const deleteController = async (req, res) => {
         });
     }
 };
+
+export const getUserProfileData = async (req, res) => {
+    try {
+        const loggedInUser = req.user._id;
+
+        if (!loggedInUser) {
+            return res
+                .status(400)
+                .json({
+                    success: false,
+                    message: "LoggedIn Id is missing"
+                });
+        };
+
+        if (!mongoose.Types.ObjectId.isValid(loggedInUser)) {
+            return res
+                .status(400)
+                .json({
+                    success: false,
+                    message: "Invalid loggedIn Id"
+                });
+        };
+
+        const userData = await authModel.findById(loggedInUser, { password: 0 });
+
+        if (!userData) {
+            return res
+                .status(400)
+                .json({
+                    success: false,
+                    message: "User data is missing"
+                });
+        };
+
+        return res
+            .status(200)
+            .json({
+                success: true,
+                message: "Data fetch Successfully",
+                data: userData
+            })
+    } catch (error) {
+        return res
+            .status(500)
+            .json({
+                success: false,
+                message: "Internal Server Error",
+                error: error.message
+            })
+    }
+};
+
+export const updateUserProfileData = async (req, res) => {
+    try {
+        const { name, email, password, phoneNumber } = req.body;
+
+        const loggedInUser = req.user._id;
+
+        if (!loggedInUser) {
+            return res
+                .status(400)
+                .json({
+                    success: false,
+                    message: "LoggedIn Id is missing"
+                });
+        };
+
+        if (!mongoose.Types.ObjectId.isValid(loggedInUser)) {
+            return res
+                .status(400)
+                .json({
+                    success: false,
+                    message: "Invalid mongoDb Id."
+                });
+        };
+
+        if (!name && !email && !phoneNumber && !password) {
+            return res
+                .status(400)
+                .json({
+                    success: false,
+                    message: "At least one field is required to update the data."
+                })
+        }
+
+        const dataExist = await authModel.findById(loggedInUser);
+
+        if (!dataExist) {
+            return res
+                .status(400)
+                .json({
+                    success: false,
+                    message: "User-Profile is missing"
+                });
+        };
+
+        if (email && email !== dataExist.email) {
+            const emailExist = await authModel.findOne({ email });
+            if (emailExist) {
+                return res
+                    .status(400)
+                    .json({
+                        success: false,
+                        message: "Email already Exist in someone account."
+                    });
+            };
+        };
+
+        if (phoneNumber && phoneNumber !== dataExist.phoneNumber) {
+            const phoneNumberExist = await authModel.findOne({ phoneNumber });
+            if (phoneNumberExist) {
+                return res
+                    .status(400)
+                    .json({
+                        success: false,
+                        message: "PhoneNumber is already Exist in someone account."
+                    });
+            };
+        };
+
+        let hashPassword = "";
+        if (password) {
+            const salt_round = 10;
+            hashPassword = await bcrypt.hash(password, salt_round);
+        };
+
+
+        const updateData = {
+            name: name || dataExist.name,
+            email: email || dataExist.email,
+            phoneNumber: phoneNumber || dataExist.phoneNumber,
+            password: hashPassword || dataExist.password
+        };
+
+        const updateDataBase = await authModel.findByIdAndUpdate(loggedInUser, updateData, { new: true });
+
+        if (!updateDataBase) {
+            return res
+                .status(400)
+                .json({
+                    success: false,
+                    message: "Failed to update the data"
+                });
+        };
+
+        return res
+            .status(200)
+            .json({
+                success: true,
+                message: "Data update successfully",
+                data: updateDataBase
+            });
+
+    } catch (error) {
+        return res
+            .status(500)
+            .json({
+                success: false,
+                message: "Internal Server Error",
+                error: error.message
+            })
+    }
+}

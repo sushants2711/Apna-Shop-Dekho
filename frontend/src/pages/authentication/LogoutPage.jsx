@@ -1,7 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 export const LogoutPage = () => {
+
+    useEffect(() => {
+      document.title = "Logout-Page"
+    })
   return (
     <div className="container d-flex flex-column justify-content-center align-items-center vh-100">
       <div className="card shadow-lg text-center p-5" style={{ maxWidth: "500px" }}>

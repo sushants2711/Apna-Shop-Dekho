@@ -15,6 +15,10 @@ export const ProductDetailsPage = () => {
 
   const { fetchWishlist, wishlist } = allWishlistContext();
 
+  useEffect(() => {
+    document.title = "Product-Details-Page"
+  }, []);
+
   const [product, setProduct] = useState({});
   const [error, setError] = useState("");
   const [mainImage, setMainImage] = useState([]);

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Heart } from "lucide-react";
 import "./Navbar.css";
 import { NavLink, Link, useNavigate } from "react-router-dom";
@@ -18,13 +18,8 @@ export const Navbar = () => {
 
   const name = localStorage.getItem("name");
 
-  const [showAccountMenu, setShowAccountMenu] = useState(false);
-
   useEffect(() => {
     fetchWishlist();
-  }, []);
-
-  useEffect(() => {
     fetchAllCart();
   }, []);
 
@@ -50,14 +45,13 @@ export const Navbar = () => {
     if (navbarCollapse && navbarCollapse.classList.contains("show")) {
       window.bootstrap.Collapse.getInstance(navbarCollapse)?.hide();
     }
-    setShowAccountMenu(false);
   };
 
   return (
     <header>
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm p-3">
         <div className="container-fluid container">
-          {/* Brand Logo (just text now, no link) */}
+          {/* Brand Logo */}
           <span className="navbar-brand fw-bold fs-4 text-warning">
             🛍️ Apna Shop
           </span>
@@ -78,32 +72,21 @@ export const Navbar = () => {
           {/* Nav Items */}
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
-              {/* ✅ Products Link Added */}
+              {/* Products */}
               <li className="nav-item text-end">
-                <NavLink
-                  className="nav-link"
-                  to="/"
-                  onClick={handleNavLinkClick}
-                >
+                <NavLink className="nav-link" to="/" onClick={handleNavLinkClick}>
                   Products
                 </NavLink>
               </li>
 
               <li className="nav-item ps-4 text-end">
-                <NavLink
-                  className="nav-link"
-                  to="/categories"
-                  onClick={handleNavLinkClick}
-                >
+                <NavLink className="nav-link" to="/categories" onClick={handleNavLinkClick}>
                   Categories
                 </NavLink>
               </li>
+
               <li className="nav-item ps-4 text-end">
-                <NavLink
-                  className="nav-link"
-                  to="/brands"
-                  onClick={handleNavLinkClick}
-                >
+                <NavLink className="nav-link" to="/brands" onClick={handleNavLinkClick}>
                   Brands
                 </NavLink>
               </li>
@@ -115,19 +98,13 @@ export const Navbar = () => {
                   to="/wishlist"
                   onClick={handleNavLinkClick}
                 >
-                  <Heart
-                    color="#ff4757"
-                    strokeWidth={2.5}
-                    className="me-1 text-end"
-                  />
+                  <Heart color="#ff4757" strokeWidth={2.5} className="me-1" />
                   Wishlist
-                  {lengthWishlist > 0 ? (
+                  {lengthWishlist > 0 && (
                     <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                       {lengthWishlist}
                     </span>
-                  ):  <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                    
-                  </span> }
+                  )}
                 </NavLink>
               </li>
 
@@ -139,77 +116,55 @@ export const Navbar = () => {
                   onClick={handleNavLinkClick}
                 >
                   🛒 Cart
-                  {totalcartItems > 0 ? (
+                  {totalcartItems > 0 && (
                     <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                       {totalcartItems}
                     </span>
-                  ): <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                    
-                    </span>}
-                </NavLink>
-              </li>
-
-                <li className="nav-item text-end ps-4">
-                <NavLink
-                  className="nav-link"
-                  to="/order-history"
-                  onClick={handleNavLinkClick}
-                >
-                  Orders
-                </NavLink>
-              </li>
-
-              {/* Account */}
-              <li className="nav-item ps-4 text-end">
-                <button
-                  className="btn btn-warning fw-semibold"
-                  onClick={() => setShowAccountMenu(!showAccountMenu)}
-                >
-                  Account
-                </button>
-              </li>
-
-              {/* Account Menu */}
-              {showAccountMenu && (
-                <>
-                  {!name && (
-                    <>
-                      <li className="nav-item ps-3 text-end">
-                        <Link
-                          className="nav-link"
-                          to="/login"
-                          onClick={handleNavLinkClick}
-                        >
-                          Login
-                        </Link>
-                      </li>
-                      <li className="nav-item ps-3 text-end">
-                        <Link
-                          className="nav-link"
-                          to="/signup"
-                          onClick={handleNavLinkClick}
-                        >
-                          Signup
-                        </Link>
-                      </li>
-                    </>
                   )}
-                  {name && (
-                    <li className="nav-item ps-3 text-end">
-                      <a
-                        className="nav-link"
-                        onClick={() => {
-                          handleLogout();
-                          handleNavLinkClick();
-                          handleNavLinkClick();
-                        }}
-                      >
-                        Logout
-                      </a>
+                </NavLink>
+              </li>
+
+              {/* Orders */}
+              <li className="nav-item dropdown ps-4 text-end">
+                <div className="dropdown">
+                  <button
+                    className="btn btn-warning fw-semibold dropdown-toggle w-100"
+                    id="accountDropdown"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    Account
+                  </button>
+                  <ul className="dropdown-menu bg-dark" aria-labelledby="accountDropdown">
+
+                    <li>
+                      <Link className="dropdown-item text-light" to="/user/profile" onClick={handleNavLinkClick}>Profile</Link>
                     </li>
-                  )}
-                </>
-              )}
+
+                    {!name ? (
+                      <>
+                        <li>
+                          <Link className="dropdown-item text-light" to="/login" onClick={handleNavLinkClick}>
+                            Login
+                          </Link>
+                        </li>
+                        <li>
+                          <Link className="dropdown-item text-light" to="/signup" onClick={handleNavLinkClick}>
+                            Signup
+                          </Link>
+                        </li>
+                      </>
+                    ) : (
+                      <li>
+                        <button className="dropdown-item text-light" onClick={handleLogout}>
+                          Logout
+                        </button>
+                      </li>
+                    )}
+                  </ul>
+                </div>
+              </li>
+
             </ul>
           </div>
         </div>

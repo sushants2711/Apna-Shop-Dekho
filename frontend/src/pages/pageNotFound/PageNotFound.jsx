@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 export const PageNotFound = () => {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    document.title = "PageNotFound"
+  },[]);
 
   return (
     <main className="d-flex flex-column justify-content-center align-items-center vh-100 text-center">

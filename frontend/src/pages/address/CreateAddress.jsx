@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { handleError } from "../../toastMessage/errorMessage";
 import { useState } from "react";
 import { createAddress } from "../../API/AddressAPI/createAddress";
@@ -21,6 +21,10 @@ export const CreateAddress = () => {
         city: "",
         state: "",
     });
+
+      useEffect(() => {
+        document.title = "Create-Address-page"
+      }, [])
 
     const handleChange = (e) => {
         const name = e.target.name;

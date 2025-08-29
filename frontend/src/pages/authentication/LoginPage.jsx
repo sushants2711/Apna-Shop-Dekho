@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { handleError } from "../../toastMessage/errorMessage";
@@ -18,6 +18,10 @@ export const LoginPage = () => {
     email: "",
     password: "",
   });
+
+  useEffect(() => {
+    document.title = "Login-Page"
+  })
 
   const handleInputChange = (e) => {
     const name = e.target.name;

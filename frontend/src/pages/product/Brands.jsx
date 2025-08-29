@@ -15,6 +15,11 @@ export const Brands = () => {
   useEffect(() => {
     fetchBrand();
   }, [])
+
+  useEffect(() => {
+    document.title="Brands Page"
+  }, []);
+  
   // Some pleasant card background colors
   const colors = [
     "#fef9c3", // soft yellow
@@ -23,6 +28,13 @@ export const Brands = () => {
     "#fce7f3", // light pink
     "#ede9fe", // lavender
     "#fcd34d", // gold
+    "#ffe4e6", // blush pink
+    "#ccfbf1", // aqua mint
+    "#fde68a", // warm amber
+    "#e9d5ff", // soft violet
+    "#d9f99d", // lime pastel
+    "#bae6fd", // sky pastel
+    "#fbcfe8", // rose pastel
   ];
 
   const handleNavigate = (brand) => {
@@ -42,22 +54,23 @@ export const Brands = () => {
           <hr className="border border-1 border-dark" />
 
           <div className="row my-5">
-            { brand.length > 0 && brand.map((curr, index) => (
+            {brand.length > 0 && brand.map((curr, index) => (
               <div className="col-12 col-md-6 col-lg-3 my-3" key={index} onClick={() => handleNavigate(curr)}>
-              <div
-                className="card shadow-sm border-0 rounded-3 d-flex justify-content-center align-items-center text-center p-4"
-                style={{
-                  height: "200px",
-                  backgroundColor: colors[index % colors.length],
-                  fontWeight: "bold",
-                  fontSize: "1.2rem",
-                  color: "#1b1a1dff",
-                }}
-              >
-                {curr}
+                <div
+                  className="card shadow-sm border-0 rounded-3 d-flex justify-content-center align-items-center text-center p-4"
+                  style={{
+                    height: "200px",
+                    backgroundColor: colors[index % colors.length],
+                    fontWeight: "bold",
+                    fontSize: "1.2rem",
+                    color: "#1b1a1dff",
+                    cursor: "pointer"
+                  }}
+                >
+                  {curr}
+                </div>
               </div>
-            </div>
-            )) }
+            ))}
           </div>
         </section>
       </main>

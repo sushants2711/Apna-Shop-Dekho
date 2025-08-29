@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 
@@ -9,6 +9,10 @@ export const PaymentSucess = () => {
   setTimeout(() => {
     navigate("/order-history")
   }, 2000)
+
+  useEffect(() => {
+    document.title = "Payment-Success"
+  }, []);
 
   return (
     <main className="d-flex vh-100 justify-content-center align-items-center bg-light">
